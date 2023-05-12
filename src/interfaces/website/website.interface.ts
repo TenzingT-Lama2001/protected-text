@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import { Request, Response } from 'express';
 
 export interface IWebsiteDocument extends Document {
   name: string;
@@ -6,4 +7,7 @@ export interface IWebsiteDocument extends Document {
 export interface IWebsite {
   name: string;
 }
-// export type IWebsite = Pick<IWebsiteDocument, 'name'>;
+export interface IWebsiteController {
+  createWebsite(req: Request, res: Response): Promise<void>;
+  getWebsites(req: Request, res: Response): Promise<void>;
+}

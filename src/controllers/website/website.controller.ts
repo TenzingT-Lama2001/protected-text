@@ -3,11 +3,8 @@ import { Request, Response } from 'express';
 import { websiteService } from 'src/services/website/website.service';
 import HTTP_STATUS from 'http-status-codes';
 import { CREATED_WEBSITE, FETCHED_WEBSITES } from 'src/constants/messages';
+import { IWebsiteController } from 'src/interfaces/website/website.interface';
 
-interface IWebsiteController {
-  createWebsite(req: Request, res: Response): Promise<void>;
-  getWebsites(req: Request, res: Response): Promise<void>;
-}
 export class WebsiteController implements IWebsiteController {
   public async createWebsite(req: Request, res: Response): Promise<void> {
     const { name } = req.body;

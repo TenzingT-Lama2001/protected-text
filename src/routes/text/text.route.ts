@@ -11,6 +11,7 @@ class TextRoutes {
   public routes(): Router {
     this.router.post('/text', TextController.prototype.createText);
     this.router.get('/text', TextController.prototype.getTexts);
+    this.router.delete('/text', TextController.prototype.deleteTexts);
     return this.router;
   }
 }
