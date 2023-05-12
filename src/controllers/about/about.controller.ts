@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
+import { aboutService } from '@services/about/about.service';
 import { Request, Response } from 'express';
-import { aboutService } from 'src/services/about/about.service';
 
 export class AboutController {
   public async getAbout(_req: Request, res: Response): Promise<void> {

@@ -1,8 +1,8 @@
+import { aboutRoutes } from '@routes/about/about.route';
+import { homeRoutes } from '@routes/home/home.route';
+import { textRoutes } from '@routes/text/text.route';
+import { websiteRoutes } from '@routes/website/website.route';
 import { Application } from 'express';
-import { aboutRoutes } from './routes/about/about.route';
-import { homeRoutes } from './routes/home/home.route';
-import { websiteRoutes } from './routes/website/website.route';
-import { textRoutes } from './routes/text/text.route';
 
 const BASE_PATH = '/api/v1';
 

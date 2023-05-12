@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
+import { homeService } from '@services/home/home.service';
 import { Request, Response } from 'express';
-import { homeService } from 'src/services/home/home.service';
 
 export class HomeController {
   public async getHome(_req: Request, res: Response): Promise<void> {

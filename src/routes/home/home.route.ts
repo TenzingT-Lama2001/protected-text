@@ -1,5 +1,5 @@
+import { HomeController } from '@controllers/home/home.controller';
 import express, { Router } from 'express';
-import { HomeController } from 'src/controllers/home/home.controller';
 
 class HomeRoutes {
   private router: Router;

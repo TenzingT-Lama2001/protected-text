@@ -1,5 +1,5 @@
+import { WebsiteController } from '@controllers/website/website.controller';
 import express, { Router } from 'express';
-import { WebsiteController } from 'src/controllers/website/website.controller';
 
 class WebsiteRoutes {
   private router: Router;

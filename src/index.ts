@@ -3,9 +3,11 @@
 import express, { Application } from 'express';
 import morgan from 'morgan';
 import http from 'http';
-import logger from './utils/logger';
+import Logger from 'bunyan';
 import applicationRoutes from './routes';
+import { config } from './config';
 
+const log: Logger = config.createLogger('server');
 const SERVER_PORT = 3000;
 export class ProtectedTextServer {
   private app: Application;
@@ -30,13 +32,13 @@ export class ProtectedTextServer {
       const httpServer: http.Server = new http.Server(app);
       this.startHttpServer(httpServer);
     } catch (error) {
-      logger.error(error);
+      log.error(error);
     }
   }
 
   private startHttpServer(httpServer: http.Server): void {
     httpServer.listen(SERVER_PORT, () => {
-      logger.info(`Server running on port http://localhost:${SERVER_PORT}`);
+      log.info(`Server running on port http://localhost:${SERVER_PORT}`);
     });
   }
 

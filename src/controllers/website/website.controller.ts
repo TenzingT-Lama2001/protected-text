@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
+import { websiteService } from '@services/website/website.service';
 import { Request, Response } from 'express';
-import { websiteService } from 'src/services/website/website.service';
+
 import HTTP_STATUS from 'http-status-codes';
 import { CREATED_WEBSITE, FETCHED_WEBSITES } from 'src/constants/messages';
 import { IWebsiteController } from 'src/interfaces/website/website.interface';

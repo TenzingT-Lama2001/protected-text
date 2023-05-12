@@ -1,5 +1,5 @@
+import { AboutController } from '@controllers/about/about.controller';
 import express, { Router } from 'express';
-import { AboutController } from 'src/controllers/about/about.controller';
 
 class AboutRoutes {
   private router: Router;

@@ -1,4 +1,5 @@
 /* eslint-disable class-methods-use-this */
+import { textService } from '@services/text/text.service';
 import { Request, Response } from 'express';
 import HTTP_STATUS from 'http-status-codes';
 import {
@@ -8,7 +9,6 @@ import {
   FETCHED_TEXTS
 } from 'src/constants/messages';
 import { ITextController } from 'src/interfaces/text/text.interface';
-import { textService } from 'src/services/text/text.service';
 
 export class TextController implements ITextController {
   public async createText(req: Request, res: Response): Promise<void> {

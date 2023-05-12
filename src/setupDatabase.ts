@@ -1,16 +1,18 @@
 import mongoose from 'mongoose';
-import logger from './utils/logger';
+import Logger from 'bunyan';
+import { config } from './config';
 
+const log: Logger = config.createLogger('setupDatabase');
 export default () => {
   const connect = () => {
     mongoose.set('strictQuery', false);
     mongoose
-      .connect('mongodb://localhost:27017/protected-text')
+      .connect(`${config.DATABASE_URL}`)
       .then(() => {
-        logger.info('Successfully connected to database');
+        log.info('Successfully connected to database');
       })
       .catch((error) => {
-        logger.error('Error connecting to database', error);
+        log.error('Error connecting to database', error);
         return process.exit(1);
       });
   };

@@ -1,5 +1,5 @@
+import { TextController } from '@controllers/text/text.controller';
 import express, { Router } from 'express';
-import { TextController } from 'src/controllers/text/text.controller';
 
 class TextRoutes {
   private router: Router;
