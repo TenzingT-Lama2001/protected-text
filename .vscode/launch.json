@@ -11,7 +11,8 @@
             "port": 9229,
             "skipFiles": [
                 "<node_internals>/**"
-            ]
+            ],
+            "restart": true
         },
         {
             "type": "node",
@@ -23,7 +24,8 @@
             "program": "${workspaceFolder}\\src\\services\\home\\home.service.ts",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
-            ]
+            ],
+            "restart": true
         }
     ]
 }

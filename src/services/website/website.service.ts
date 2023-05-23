@@ -1,8 +1,6 @@
 import { IWebsiteDocument } from 'src/interfaces/website/website.interface';
 import Website from 'src/models/website/website.model';
 
-/* eslint-disable class-methods-use-this */
-
 interface IWebsiteService {
   createWebsite(name: string): Promise<IWebsiteDocument>;
   getWebsites(): Promise<IWebsiteDocument[]>;
@@ -25,5 +23,3 @@ export class WebsiteService implements IWebsiteService {
     return websites.map((website) => website.toObject() as IWebsiteDocument);
   }
 }
-
-export const websiteService: WebsiteService = new WebsiteService();

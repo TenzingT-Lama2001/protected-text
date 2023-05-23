@@ -1,11 +1,10 @@
-/* eslint-disable class-methods-use-this */
-import { websiteService } from '@services/website/website.service';
+import { IWebsiteController } from '@interfaces/website/website.interface';
+import { WebsiteService } from '@services/website/website.service';
 import { Request, Response } from 'express';
-
 import HTTP_STATUS from 'http-status-codes';
 import { CREATED_WEBSITE, FETCHED_WEBSITES } from 'src/constants/messages';
-import { IWebsiteController } from 'src/interfaces/website/website.interface';
 
+const websiteService: WebsiteService = new WebsiteService();
 export class WebsiteController implements IWebsiteController {
   public async createWebsite(req: Request, res: Response): Promise<void> {
     const { name } = req.body;

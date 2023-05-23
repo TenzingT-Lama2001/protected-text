@@ -1,10 +1,11 @@
-module.exports = { 
-    parser: '@typescript-eslint/parser',
-    plugins: ['@typescript-eslint/eslint-plugin'],
-    parserOptions: {
-        project: 'tsconfig.json',
-        sourceType: 'module',
-      },
+module.exports = {
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  parserOptions: {
+    project: 'tsconfig.json',
+    sourceType: 'module',
+    ecmaVersion: 2020,
+  },
   env: {
     node: true,
     commonjs: true,
@@ -14,28 +15,42 @@ module.exports = {
     'airbnb-base',
     'plugin:prettier/recommended',
     'plugin:@typescript-eslint/recommended',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
   ],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
-  parserOptions: {
-    ecmaVersion: 2020,
+  settings: {
+    'import/resolver': {
+      typescript: {}, // enable TypeScript-aware module resolution
+    },
   },
-  ignorePatterns: ['.eslintrc.js'],
   rules: {
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        ts: 'never',
+      },
+    ],
+    'func-names': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_' }],
+    'eol-last': ['error', 'always'],
+    'no-underscore-dangle': 'off',
+    'consistent-return': 'off',
+    'class-methods-use-this': 'off',
     'prettier/prettier': [
       'error',
       {
         trailingComma: 'all',
         semi: true,
-        printWidth: 80,
+        printWidth: 120,
         singleQuote: true,
       },
     ],
-    "import/extensions":'off',
-    "import/no-unresolved":'off',
-    "import/prefer-default-export": 'off',
+    'import/prefer-default-export': 'off',
     'comma-dangle': [
       'error',
       {
@@ -52,19 +67,14 @@ module.exports = {
         props: false,
       },
     ],
-    'no-console': [
-      'warn',
+    'no-console': 'error',
+    quotes: [
+      'error',
+      'single',
       {
-        allow: ['warn', 'error', 'info'],
+        avoidEscape: true,
+        allowTemplateLiterals: false,
       },
     ],
-    // quotes: [
-    //   'error',
-    //   'backtick',
-    //   {
-    //     avoidEscape: true,
-    //     allowTemplateLiterals: false,
-    //   },
-    // ],
   },
 };

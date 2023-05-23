@@ -1,7 +1,7 @@
 import { WebsiteController } from '@controllers/website/website.controller';
 import express, { Router } from 'express';
 
-class WebsiteRoutes {
+export class WebsiteRoutes {
   private router: Router;
 
   constructor() {
@@ -14,5 +14,3 @@ class WebsiteRoutes {
     return this.router;
   }
 }
-
-export const websiteRoutes: WebsiteRoutes = new WebsiteRoutes();
