@@ -35,6 +35,7 @@ module.exports = {
         ts: 'never',
       },
     ],
+    'func-names': 'off',
     '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_' }],
     'eol-last': ['error', 'always'],
     'no-underscore-dangle': 'off',
