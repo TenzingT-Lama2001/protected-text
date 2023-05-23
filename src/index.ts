@@ -4,9 +4,9 @@ import http from 'http';
 import Logger from 'bunyan';
 import session from 'express-session';
 import passport from 'passport';
+import cors from 'cors';
 import applicationRoutes from './routes';
 import { config } from './config';
-
 import PassportStrategies from './utils/PassportStrategies';
 
 const log: Logger = config.createLogger('server');
@@ -27,6 +27,7 @@ export class ProtectedTextServer {
   private standardMiddleware(app: Application): void {
     app.use(express.json());
     app.use(morgan('tiny'));
+    app.use(cors({ origin: ['http://localhost:3001'], credentials: true }));
     app.use(
       session({
         secret: 'my-sec-key',
