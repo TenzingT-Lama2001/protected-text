@@ -1,7 +1,7 @@
 import { TextController } from '@controllers/text/text.controller';
 import express, { Router } from 'express';
 
-class TextRoutes {
+export class TextRoutes {
   private router: Router;
 
   constructor() {
@@ -15,5 +15,3 @@ class TextRoutes {
     return this.router;
   }
 }
-
-export const textRoutes: TextRoutes = new TextRoutes();

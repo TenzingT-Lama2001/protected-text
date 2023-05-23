@@ -1,7 +1,7 @@
 import { AboutController } from '@controllers/about/about.controller';
 import express, { Router } from 'express';
 
-class AboutRoutes {
+export class AboutRoutes {
   private router: Router;
 
   constructor() {
@@ -13,5 +13,3 @@ class AboutRoutes {
     return this.router;
   }
 }
-
-export const aboutRoutes: AboutRoutes = new AboutRoutes();

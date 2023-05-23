@@ -1,7 +1,7 @@
 import { HomeController } from '@controllers/home/home.controller';
 import express, { Router } from 'express';
 
-class HomeRoutes {
+export class HomeRoutes {
   private router: Router;
 
   constructor() {
@@ -13,5 +13,3 @@ class HomeRoutes {
     return this.router;
   }
 }
-
-export const homeRoutes: HomeRoutes = new HomeRoutes();
