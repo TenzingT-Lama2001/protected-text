@@ -1,15 +1,10 @@
-/* eslint-disable class-methods-use-this */
-import { textService } from '@services/text/text.service';
+import { ITextController } from '@interfaces/text/text.interface';
+import { TextService } from '@services/text/text.service';
 import { Request, Response } from 'express';
 import HTTP_STATUS from 'http-status-codes';
-import {
-  CREATED_TEXT,
-  DELETED_TEXTS,
-  // eslint-disable-next-line prettier/prettier
-  FETCHED_TEXTS
-} from 'src/constants/messages';
-import { ITextController } from 'src/interfaces/text/text.interface';
+import { CREATED_TEXT, DELETED_TEXTS, FETCHED_TEXTS } from 'src/constants/messages';
 
+export const textService: TextService = new TextService();
 export class TextController implements ITextController {
   public async createText(req: Request, res: Response): Promise<void> {
     const { text } = req.body;

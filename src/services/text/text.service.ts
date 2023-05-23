@@ -1,23 +1,10 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable class-methods-use-this */
-import {
-  ITextDocument,
-  // eslint-disable-next-line prettier/prettier
-  ITextService
-} from 'src/interfaces/text/text.interface';
-import {
-  IWebsite,
-  // eslint-disable-next-line prettier/prettier
-  IWebsiteDocument
-} from 'src/interfaces/website/website.interface';
+import { ITextDocument, ITextService } from 'src/interfaces/text/text.interface';
+import { IWebsiteDocument } from 'src/interfaces/website/website.interface';
 import Text from 'src/models/text/text.model';
 import Website from 'src/models/website/website.model';
 
 export class TextService implements ITextService {
-  public async createText(
-    text: string,
-    websiteName: string,
-  ): Promise<ITextDocument> {
+  public async createText(text: string, websiteName: string): Promise<ITextDocument> {
     const website = (await Website.findOne({
       name: websiteName,
     })) as IWebsiteDocument | null;
@@ -61,5 +48,3 @@ export class TextService implements ITextService {
     await Text.findOneAndDelete({ website: website._id });
   }
 }
-
-export const textService: TextService = new TextService();

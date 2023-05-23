@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import express, { Express } from 'express';
 import { ProtectedTextServer } from './index';
 import databaseConnection from './setupDatabase';
