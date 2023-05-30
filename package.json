@@ -30,7 +30,8 @@
     "passport-local": "^1.0.0",
     "pino": "^8.12.1",
     "typescript": "^5.0.4",
-    "validator": "^13.9.0"
+    "validator": "^13.9.0",
+    "winston": "^3.9.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -44,6 +45,7 @@
     "@types/passport-google-oauth20": "^2.0.11",
     "@types/passport-local": "^1.0.35",
     "@types/validator": "^13.7.17",
+    "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^5.59.6",
     "@typescript-eslint/parser": "^5.59.6",
     "eslint": "^8.41.0",
