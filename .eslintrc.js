@@ -38,8 +38,6 @@ module.exports = {
     'func-names': 'off',
     '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_' }],
     'eol-last': ['error', 'always'],
-    'no-underscore-dangle': 'off',
-    'consistent-return': 'off',
     'prettier/prettier': [
       'error',
       {
@@ -66,7 +64,6 @@ module.exports = {
         props: false,
       },
     ],
-    'no-console': 'error',
     quotes: [
       'error',
       'single',
