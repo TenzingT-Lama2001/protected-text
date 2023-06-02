@@ -1,14 +1,10 @@
-import dotenv from 'dotenv';
-
-dotenv.config({});
-
 class Config {
-  public DATABASE_URL: string | undefined;
+  public DATABASE_URL: string;
 
   public NODE_ENV: string | undefined;
 
   constructor() {
-    this.DATABASE_URL = process.env.DATABASE_URL;
+    this.DATABASE_URL = process.env.DATABASE_URL || '';
     this.NODE_ENV = process.env.NODE_ENV;
   }
 
