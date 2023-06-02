@@ -3,6 +3,5 @@
     "ext":"ts,js,json",
     "ignore":["node_modules","coverage","dist"],
     "exec":"ts-node -r tsconfig-paths/register ./src/app.ts",
-    "restartable":"rs"
-
+    "restartable": "rs"
 }

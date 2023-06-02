@@ -1,14 +1,13 @@
-import express, { Express } from 'express';
+import './dotEnvInit';
 import { ProtectedTextServer } from './index';
 import databaseConnection from './setupDatabase';
 import { config } from './config';
 
 class Application {
-  public static initialize(): void {
+  public static async initialize(): Promise<void> {
     Application.loadConfig();
-    databaseConnection();
-    const app: Express = express();
-    const server: ProtectedTextServer = new ProtectedTextServer(app);
+    await databaseConnection();
+    const server = new ProtectedTextServer();
     server.start();
   }
 

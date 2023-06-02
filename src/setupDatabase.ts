@@ -1,19 +1,16 @@
 import mongoose from 'mongoose';
 import { config } from './config';
 
-export default () => {
-  const connect = () => {
-    mongoose.set('strictQuery', false);
-
-    mongoose
-      .connect(`${config.DATABASE_URL}`)
-      .then(() => {
-        // log
-      })
-      .catch(() => {
-        return process.exit(1);
-      });
+export default async () => {
+  const connect = async () => {
+    try {
+      mongoose.set('strictQuery', false);
+      mongoose.connection.on('disconnected', connect);
+      await mongoose.connect(config.DATABASE_URL);
+    } catch (error) {
+      process.exit(1);
+    }
   };
-  connect();
-  mongoose.connection.on('disconnected', connect);
+  const conn = await connect();
+  return conn;
 };
