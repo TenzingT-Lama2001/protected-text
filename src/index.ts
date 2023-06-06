@@ -1,5 +1,7 @@
 import express, { Application } from 'express';
 import cors from 'cors';
+import logger from './logger';
+import { config } from './config';
 
 const SERVER_PORT = process.env.PORT || 3001;
 export class ProtectedTextServer {
@@ -19,7 +21,8 @@ export class ProtectedTextServer {
   public start(): void {
     try {
       this.app.listen(SERVER_PORT, () => {
-        // Logging out info or performing other operations
+        logger.info(`Server running on port http://localhost:${SERVER_PORT}`);
+        logger.info(config.NODE_ENV);
       });
     } catch (error) {
       // logging out error
