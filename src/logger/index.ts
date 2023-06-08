@@ -1,22 +1,34 @@
-import winston from 'winston';
 import { config } from 'src/config';
-import { DevelopmentLogger } from './DevelopmentLogger';
-import { ProductionLogger } from './ProductionLogger';
+import winston, { createLogger, format, transports } from 'winston';
 
-const getLoggerInstance = (): winston.Logger => {
-  let logger: winston.Logger;
+const { combine, timestamp, printf, colorize, json } = format;
+const getLogger = (filename: string): winston.Logger => {
+  let myLogger: winston.Logger;
 
   if (config.NODE_ENV === 'DEVELOPMENT') {
-    const developmentLogger = new DevelopmentLogger().logger;
-    logger = developmentLogger;
+    myLogger = createLogger({
+      level: 'debug',
+      levels: winston.config.syslog.levels,
+      defaultMeta: { filename },
+      format: combine(
+        config.PREETIFY === 'true' ? colorize() : json(),
+        timestamp({ format: 'HH:mm:ss' }),
+        printf(({ level, message, timestamp: msgTimestamp }) => {
+          return `${msgTimestamp} ${filename} ${level}: ${message}`;
+        }),
+      ),
+      transports: [new transports.Console(), new transports.File({ filename: 'dev.log' })],
+    });
   } else {
-    const productionLogger = new ProductionLogger().logger;
-    logger = productionLogger;
+    myLogger = createLogger({
+      level: 'info',
+      levels: winston.config.syslog.levels,
+      defaultMeta: { filename },
+      format: combine(timestamp(), config.PREETIFY === 'true' ? colorize() : json()),
+      transports: [new transports.Console(), new transports.File({ filename: 'prod.log' })],
+    });
   }
 
-  return logger;
+  return myLogger;
 };
-
-const logger = getLoggerInstance() as winston.Logger;
-
-export default logger;
+export default getLogger;
