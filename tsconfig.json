@@ -16,6 +16,7 @@
         // "@services/*": ["src/services/*"],
         // "@routes/*": ["src/routes/*"],
         // "@interfaces/*": ["src/interfaces/*"]
+        "logger/*": ["src/logger/*"]
       }
     },
     "include": ["src/**/*"],
