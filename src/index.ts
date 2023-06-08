@@ -1,8 +1,9 @@
 import express, { Application } from 'express';
 import cors from 'cors';
-import logger from './logger';
+import getLogger from './logger';
 import { config } from './config';
 
+const logger = getLogger('index.ts');
 const SERVER_PORT = process.env.PORT || 3001;
 export class ProtectedTextServer {
   private app: Application;

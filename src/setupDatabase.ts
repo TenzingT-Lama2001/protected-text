@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import { config } from './config';
-import logger from './logger';
+import getLogger from './logger';
 
+const logger = getLogger('setupDatabase.ts');
 export default async () => {
   const connect = async () => {
     try {
@@ -10,7 +11,7 @@ export default async () => {
       await mongoose.connect(config.DATABASE_URL);
       logger.info('Successfully connected to database');
     } catch (error) {
-      logger.error('Error connecting to database', error);
+      logger.error('Error connecting to database', { error });
       process.exit(1);
     }
   };
