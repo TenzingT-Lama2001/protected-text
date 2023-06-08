@@ -3,9 +3,12 @@ class Config {
 
   public NODE_ENV: string | undefined;
 
+  public PREETIFY: string | undefined;
+
   constructor() {
     this.DATABASE_URL = process.env.DATABASE_URL || '';
     this.NODE_ENV = process.env.NODE_ENV;
+    this.PREETIFY = process.env.PREETIFY || 'false';
   }
 
   public validateConfig(): void {
