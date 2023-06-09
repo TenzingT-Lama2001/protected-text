@@ -2,18 +2,18 @@ import { config } from 'src/config';
 import winston, { createLogger, format, transports } from 'winston';
 
 const { combine, timestamp, printf, colorize, json } = format;
-const getLogger = (filename: string): winston.Logger => {
+const getLogger = (): winston.Logger => {
   let myLogger: winston.Logger;
 
-  if (config.NODE_ENV === 'DEVELOPMENT') {
+  if (config.nodeEnv === 'DEVELOPMENT') {
     myLogger = createLogger({
       level: 'debug',
       levels: winston.config.syslog.levels,
-      defaultMeta: { filename },
+      defaultMeta: {},
       format: combine(
-        config.PREETIFY === 'true' ? colorize() : json(),
+        config.prettify ? colorize() : json(),
         timestamp({ format: 'HH:mm:ss' }),
-        printf(({ level, message, timestamp: msgTimestamp }) => {
+        printf(({ level, message, timestamp: msgTimestamp, filename }) => {
           return `${msgTimestamp} ${filename} ${level}: ${message}`;
         }),
       ),
@@ -23,12 +23,13 @@ const getLogger = (filename: string): winston.Logger => {
     myLogger = createLogger({
       level: 'info',
       levels: winston.config.syslog.levels,
-      defaultMeta: { filename },
-      format: combine(timestamp(), config.PREETIFY === 'true' ? colorize() : json()),
+      defaultMeta: {},
+      format: combine(timestamp(), config.prettify ? colorize() : json()),
       transports: [new transports.Console(), new transports.File({ filename: 'prod.log' })],
     });
   }
 
   return myLogger;
 };
-export default getLogger;
+const logger = getLogger();
+export default logger;
