@@ -1,6 +1,6 @@
 import express, { Application } from 'express';
 import cors from 'cors';
-import ptLogger from 'logger/index';
+import ptLogger from '@logger';
 import { errorHandler } from './middleware/errorHandler.middleware';
 import { BadRequestError } from './error/BadRequestError';
 import { messages } from './constant/errors';
@@ -30,7 +30,6 @@ export class ProtectedTextServer {
     try {
       this.app.listen(SERVER_PORT, () => {
         logger.info(`Server running on port http://localhost:${SERVER_PORT}`);
-        logger.info(process.env.NODE_ENV);
       });
     } catch (error) {
       // logging out error
