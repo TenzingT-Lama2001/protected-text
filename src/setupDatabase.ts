@@ -1,17 +1,19 @@
 import mongoose from 'mongoose';
-import { config } from './config';
-import logger from './logger/index';
+import config from 'config';
+import { IDbConfig } from '@interface/config.interface';
+import parentLogger from './logger';
 
-const childLogger = logger.child({ filename: __filename });
+const dbConfig = config.get('db') as IDbConfig;
+const logger = parentLogger.child({ filename: __filename });
 export default async () => {
   const connect = async () => {
     try {
       mongoose.set('strictQuery', false);
       mongoose.connection.on('disconnected', connect);
-      await mongoose.connect(config.databaseUrl);
-      childLogger.info('Successfully connected to database');
+      await mongoose.connect(dbConfig.databaseUrl);
+      logger.info('Successfully connected to database');
     } catch (error) {
-      childLogger.error('Error connecting to database', { error });
+      logger.error('Error connecting to database', { error });
       process.exit(1);
     }
   };
