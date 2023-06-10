@@ -1,35 +1,24 @@
-import { config } from 'src/config';
-import winston, { createLogger, format, transports } from 'winston';
+import { createLogger, format, transports } from 'winston';
+import config from 'config';
+import { ILoggerConfig } from 'src/interface/config.interface';
+import pkg from '../../package.json';
 
-const { combine, timestamp, printf, colorize, json } = format;
-const getLogger = (): winston.Logger => {
-  let myLogger: winston.Logger;
+const { combine, timestamp, json, errors, prettyPrint, metadata } = format;
+const loggerConfig = config.get('logger') as ILoggerConfig;
 
-  if (config.nodeEnv === 'DEVELOPMENT') {
-    myLogger = createLogger({
-      level: 'debug',
-      levels: winston.config.syslog.levels,
-      defaultMeta: {},
-      format: combine(
-        config.prettify ? colorize() : json(),
-        timestamp({ format: 'HH:mm:ss' }),
-        printf(({ level, message, timestamp: msgTimestamp, filename }) => {
-          return `${msgTimestamp} ${filename} ${level}: ${message}`;
-        }),
-      ),
-      transports: [new transports.Console(), new transports.File({ filename: 'dev.log' })],
-    });
-  } else {
-    myLogger = createLogger({
-      level: 'info',
-      levels: winston.config.syslog.levels,
-      defaultMeta: {},
-      format: combine(timestamp(), config.prettify ? colorize() : json()),
-      transports: [new transports.Console(), new transports.File({ filename: 'prod.log' })],
-    });
-  }
+const loggerTransports = [];
+if (loggerConfig.transports.includes('FILE')) {
+  loggerTransports.push(new transports.File({ filename: loggerConfig.filename }));
+}
+if (loggerConfig.transports.includes('CONSOLE')) {
+  loggerTransports.push(new transports.Console());
+}
 
-  return myLogger;
-};
-const logger = getLogger();
+const logger = createLogger({
+  level: loggerConfig.level,
+  defaultMeta: { service: pkg.name },
+  transports: loggerTransports,
+  format: combine(timestamp(), metadata(), errors({ stack: true }), loggerConfig.prettyPrint ? prettyPrint() : json()),
+});
+
 export default logger;

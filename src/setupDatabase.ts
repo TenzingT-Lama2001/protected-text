@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
 import config from 'config';
 import { IDbConfig } from '@interface/config.interface';
-import parentLogger from './logger';
+import ptLogger from './logger';
 
 const dbConfig = config.get('db') as IDbConfig;
-const logger = parentLogger.child({ filename: __filename });
+const logger = ptLogger.child({ file: __filename });
+
 export default async () => {
   const connect = async () => {
     try {

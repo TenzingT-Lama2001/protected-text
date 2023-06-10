@@ -1,12 +1,11 @@
 import express, { Application } from 'express';
 import cors from 'cors';
-import logger from './logger';
-import { config } from './config';
+import ptLogger from 'logger/index';
 import { errorHandler } from './middleware/errorHandler.middleware';
 import { BadRequestError } from './error/BadRequestError';
 import { messages } from './constant/errors';
 
-const childLogger = logger.child({ filename: __filename });
+const logger = ptLogger.child({ file: __filename });
 const SERVER_PORT = process.env.PORT || 3001;
 export class ProtectedTextServer {
   private app: Application;
@@ -30,8 +29,8 @@ export class ProtectedTextServer {
   public start(): void {
     try {
       this.app.listen(SERVER_PORT, () => {
-        childLogger.info(`Server running on port http://localhost:${SERVER_PORT}`);
-        childLogger.info(config.nodeEnv);
+        logger.info(`Server running on port http://localhost:${SERVER_PORT}`);
+        logger.info(process.env.NODE_ENV);
       });
     } catch (error) {
       // logging out error

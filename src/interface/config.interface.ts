@@ -3,9 +3,10 @@ export interface IDbConfig {
 }
 
 export interface ILoggerConfig {
-  prettify: boolean;
   level: string;
   filename: string;
+  transports: 'FILE' | 'CONSOLE' | ['FILE' | 'CONSOLE'];
+  prettyPrint: boolean;
 }
 
 export interface IAppConfig {
