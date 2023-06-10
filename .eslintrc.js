@@ -2,7 +2,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   parserOptions: {
-    project: 'tsconfig.json',
+    // project: 'tsconfig.json',
     sourceType: 'module',
     ecmaVersion: 2020,
   },
@@ -36,7 +36,9 @@ module.exports = {
       },
     ],
     'func-names': 'off',
-    '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_' }],
+    'no-unused-vars': ['error', { varsIgnorePattern: '^_', argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_', argsIgnorePattern: '^_' }],
+    'no-underscore-dangle': 'off',
     'eol-last': ['error', 'always'],
     'prettier/prettier': [
       'error',

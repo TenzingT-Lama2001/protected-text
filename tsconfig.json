@@ -6,7 +6,8 @@
       "moduleResolution": "node16",
       "outDir": "dist",                                    /* Specify an output folder for all emitted files. */
       "removeComments": true,                              /* Disable emitting comments. */
-      "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */
+      "esModuleInterop": true,   
+      "resolveJsonModule": true,                          /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */
       "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
       "strict": true,                                      /* Enable all strict type-checking options. */
       "skipLibCheck": true,
@@ -15,9 +16,10 @@
         // "@controllers/*": ["src/controllers/*"],
         // "@services/*": ["src/services/*"],
         // "@routes/*": ["src/routes/*"],
-        // "@interfaces/*": ["src/interfaces/*"]
+        "@interface/*": ["src/interface/*"],
+        "@logger": ["src/logger/"]
       }
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "config"],
     "exclude": ["node_modules", "dist", "__tests__", "coverage"],
   }
