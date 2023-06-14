@@ -2,7 +2,7 @@ import path from 'path';
 
 export const basePath = path.join(__dirname, '..');
 export const isDevEnv = process.env.NODE_ENV === 'development';
-console.log(isDevEnv);
+
 export default {
   basePath,
   db: {
