@@ -1,10 +1,12 @@
 import path from 'path';
 
 export const basePath = path.join(__dirname, '..');
+export const isDevEnv = process.env.NODE_ENV === 'development';
+console.log(isDevEnv);
 export default {
   basePath,
   db: {
-    databaseUrl: 'mongodb://localhost:27017/protected-text',
+    databaseUrl: process.env.DATABASE_URL,
   },
   logger: {
     level: process.env.LOG_LEVEL || 'info',

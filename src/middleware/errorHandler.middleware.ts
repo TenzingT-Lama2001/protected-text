@@ -1,11 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import ptLogger from '@logger';
-import config from 'config';
+import HTTP_STATUS from 'http-status-codes';
+import { isDevEnv } from 'config/default';
+// import { IAppConfig } from '@interface/config.interface';
 
 const logger = ptLogger.child({ file: __filename });
-const isDevEnv = config.util.getEnv('NODE_ENV') === 'development';
+// const isDevEnv = config.get('app') as IAppConfig;
+// logger.info('isDevEnv', isDevEnv);
 export function notFoundHandler(req: Request, res: Response, next: NextFunction) {
-  res.status(404);
+  res.status(HTTP_STATUS.NOT_FOUND);
   const error = new Error(`Not found ${req.method} ${req.originalUrl}`);
   next(error);
 }
