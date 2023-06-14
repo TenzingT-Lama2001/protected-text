@@ -1,9 +1,8 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 import ptLogger from '@logger';
-import { errorHandler } from './middleware/errorHandler.middleware';
-import { BadRequestError } from './error/BadRequestError';
-import { messages } from './constant/errors';
+import HTTP_STATUS from 'http-status-codes';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler.middleware';
 
 const logger = ptLogger.child({ file: __filename });
 const SERVER_PORT = process.env.PORT || 3001;
@@ -19,10 +18,12 @@ export class ProtectedTextServer {
     this.app.use(express.json());
     this.app.use(cors({ origin: ['http://localhost:3001'], credentials: true }));
 
-    this.app.get('/', (_req, _res, _next) => {
-      throw new BadRequestError(messages.BAD_REQUEST);
+    this.app.get('/', (_req, res, _next) => {
+      res.status(HTTP_STATUS.BAD_REQUEST);
+      throw new Error('Bad req');
     });
     // error handling middleware
+    this.app.use(notFoundHandler);
     this.app.use(errorHandler);
   }
 
