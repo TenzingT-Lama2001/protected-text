@@ -6,10 +6,10 @@ export class NoteRoutes {
   private router: Router = express.Router();
 
   public routes(): Router {
-    this.router.get('/note/:id', asyncHandler(NoteController.getNote));
-    this.router.post('/note', asyncHandler(NoteController.postNote));
-    this.router.delete('/note/:id', asyncHandler(NoteController.deleteNote));
-    this.router.patch('/note/:id', asyncHandler(NoteController.updateNote));
+    this.router.get('/:id', asyncHandler(NoteController.getNote));
+    this.router.post('/', asyncHandler(NoteController.postNote));
+    this.router.delete('/:id', asyncHandler(NoteController.deleteNote));
+    this.router.patch('/:id', asyncHandler(NoteController.updateNote));
     return this.router;
   }
 }

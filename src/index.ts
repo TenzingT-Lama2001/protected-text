@@ -8,7 +8,6 @@ import { EncryptionRoutes } from './route/encryption.route';
 
 const logger = ptLogger.child({ file: __filename });
 const SERVER_PORT = process.env.PORT || 3001;
-const BASE_PATH = '/api/v1';
 export class ProtectedTextServer {
   private app: Application;
 
@@ -26,8 +25,8 @@ export class ProtectedTextServer {
       res.status(HTTP_STATUS.BAD_REQUEST);
       throw new Error('Bad req');
     });
-    this.app.use(BASE_PATH, new NoteRoutes().routes());
-    this.app.use(BASE_PATH, new EncryptionRoutes().routes());
+    this.app.use('/api/v1/notes', new NoteRoutes().routes());
+    this.app.use('/api/v1/notes', new EncryptionRoutes().routes());
     // error handling middleware
     this.app.use(notFoundHandler);
     this.app.use(errorHandler);
