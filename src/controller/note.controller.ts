@@ -1,52 +1,50 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { NoteService } from 'src/service/note.service';
 import HTTP_STATUS from 'http-status-codes';
 
 export class NoteController {
   public static async getNote(req: Request, res: Response) {
     const { id } = req.params;
-    const fetchedNote = await NoteService.getNote(id);
+    const note = await NoteService.getNote(id);
 
-    if (!fetchedNote) {
+    if (!note) {
       res.status(404);
       throw new Error('No notes found');
     }
     res.status(HTTP_STATUS.OK).json({
-      message: 'Fetched note',
-      fetchedNote,
+      note,
     });
   }
 
   public static async postNote(req: Request, res: Response) {
-    const { note } = req.body;
-    const createdNote = await NoteService.postNote(note);
+    const { newNote } = req.body;
+    const note = await NoteService.postNote(newNote);
     res.status(HTTP_STATUS.CREATED).json({
-      message: 'Note created',
-      createdNote,
+      note,
     });
   }
 
-  public static async deleteNote(req: Request, res: Response) {
+  public static async deleteNote(req: Request, res: Response, _next: NextFunction) {
     const { id } = req.params;
     const result = await NoteService.deleteNote(id);
     if (!result) {
-      res.status(404);
-      throw new Error('No notes found');
+      const error = new Error('No notes found');
+      throw error;
     }
-    res.status(HTTP_STATUS.OK).json({ message: 'Note deleted' });
+
+    res.status(HTTP_STATUS.OK);
   }
 
   public static async updateNote(req: Request, res: Response) {
     const { id } = req.params;
-    const { note } = req.body;
-    const updatedNote = await NoteService.updateNote(id, note);
-    if (!updatedNote) {
+    const { updateNote } = req.body;
+    const note = await NoteService.updateNote(id, updateNote);
+    if (!note) {
       res.status(404);
       throw new Error('No notes found');
     }
     res.status(HTTP_STATUS.OK).json({
-      message: 'Note updated',
-      updatedNote,
+      note,
     });
   }
 }
