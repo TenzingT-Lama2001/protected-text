@@ -4,18 +4,18 @@ import { EncryptionService } from 'src/service/encryption.service';
 
 export class EncryptionController {
   public static async encrypt(req: Request, res: Response) {
-    const { encryptNote, secretKey } = req.body;
-    const note = await EncryptionService.encrypt(encryptNote, secretKey);
+    const { note, secretKey } = req.body;
+    const encryptedNote = await EncryptionService.encrypt(note, secretKey);
     res.status(HTTP_STATUS.CREATED).json({
-      note,
+      note: encryptedNote,
     });
   }
 
   public static async decrypt(req: Request, res: Response) {
-    const { decryptNote, secretKey } = req.body;
-    const note = await EncryptionService.decrypt(decryptNote, secretKey);
+    const { note, secretKey } = req.body;
+    const decryptedNote = await EncryptionService.decrypt(note, secretKey);
     res.status(HTTP_STATUS.CREATED).json({
-      note,
+      note: decryptedNote,
     });
   }
 }

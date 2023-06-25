@@ -17,10 +17,10 @@ export class NoteController {
   }
 
   public static async postNote(req: Request, res: Response) {
-    const { newNote } = req.body;
-    const note = await NoteService.postNote(newNote);
+    const { note } = req.body;
+    const newNote = await NoteService.postNote(note);
     res.status(HTTP_STATUS.CREATED).json({
-      note,
+      note: newNote,
     });
   }
 
@@ -28,23 +28,22 @@ export class NoteController {
     const { id } = req.params;
     const result = await NoteService.deleteNote(id);
     if (!result) {
-      const error = new Error('No notes found');
-      throw error;
+      res.set('x-resource-not-found', 'true');
     }
 
-    res.status(HTTP_STATUS.OK);
+    res.status(HTTP_STATUS.NO_CONTENT).end();
   }
 
   public static async updateNote(req: Request, res: Response) {
     const { id } = req.params;
-    const { updateNote } = req.body;
-    const note = await NoteService.updateNote(id, updateNote);
-    if (!note) {
+    const { note, prevContentHash } = req.body;
+    const updatedNote = await NoteService.updateNote(id, note, prevContentHash);
+    if (!updatedNote) {
       res.status(404);
       throw new Error('No notes found');
     }
     res.status(HTTP_STATUS.OK).json({
-      note,
+      note: updatedNote,
     });
   }
 }
