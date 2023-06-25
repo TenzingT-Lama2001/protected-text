@@ -6,6 +6,9 @@ const NoteSchema = new Schema<INoteDocument>({
     type: String,
     required: true,
   },
+  prevContentHash: {
+    type: String,
+  },
 });
 
 type NoteModel = Model<INoteDocument>;

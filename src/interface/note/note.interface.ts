@@ -3,6 +3,7 @@ import { Document } from 'mongoose';
 
 export interface INote {
   note: string;
+  prevContentHash: string;
 }
 export interface INoteDocument extends INote, Document {}
 
