@@ -7,6 +7,6 @@ export class V1Routes {
 
   constructor() {
     this.router.use('/notes', new NoteRoutes().router);
-    this.router.use('/notes', new EncryptionRoutes().router);
+    this.router.use('/', new EncryptionRoutes().router);
   }
 }
