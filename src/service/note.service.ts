@@ -12,8 +12,8 @@ export class NoteService {
     return existingNote.toObject() as INoteDocument;
   }
 
-  public static async postNote(note: string): TPostNote {
-    const newNote = await Note.create({ note });
+  public static async postNote(note: string, hash: string): TPostNote {
+    const newNote = await Note.create({ note, hash });
 
     return newNote.toObject() as INoteDocument;
   }
@@ -28,16 +28,16 @@ export class NoteService {
     return Note.findByIdAndDelete(id);
   }
 
-  public static async updateNote(id: string, note: string, prevContentHash: string): TUpdateNote {
+  public static async updateNote(id: string, note: string, _prevContentHash: string): TUpdateNote {
     const existingNote = (await Note.findById(id)) as INoteDocument;
 
     if (!existingNote) {
       return null;
     }
 
-    if (prevContentHash !== existingNote.prevContentHash) {
-      return null;
-    }
+    // if (prevContentHash !== existingNote.prevContentHash) {
+    //   return null;
+    // }
     existingNote.note = note;
     existingNote.save();
     return existingNote.toObject() as INoteDocument;

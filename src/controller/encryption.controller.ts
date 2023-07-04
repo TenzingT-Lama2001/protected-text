@@ -6,8 +6,10 @@ export class EncryptionController {
   public static async encrypt(req: Request, res: Response) {
     const { note, secretKey } = req.body;
     const encryptedNote = await EncryptionService.encrypt(note, secretKey);
+    const hash = await EncryptionService.hash(note);
     res.status(HTTP_STATUS.CREATED).json({
       note: encryptedNote,
+      hash,
     });
   }
 

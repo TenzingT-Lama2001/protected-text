@@ -10,4 +10,9 @@ export class EncryptionService {
     const decryptedText = CryptoJS.AES.decrypt(note, secretKey).toString(CryptoJS.enc.Utf8);
     return decryptedText;
   }
+
+  public static hash(note: string): string {
+    const hash = CryptoJS.SHA512(note).toString();
+    return hash;
+  }
 }
