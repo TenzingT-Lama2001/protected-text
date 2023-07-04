@@ -6,8 +6,9 @@ const NoteSchema = new Schema<INoteDocument>({
     type: String,
     required: true,
   },
-  prevContentHash: {
+  hash: {
     type: String,
+    required: true,
   },
 });
 
