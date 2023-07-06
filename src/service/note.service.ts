@@ -28,7 +28,7 @@ export class NoteService {
     return Note.findByIdAndDelete(id);
   }
 
-  public static async updateNote(id: string, note: string, _prevContentHash: string): TUpdateNote {
+  public static async updateNote(id: string, note: string, hash: string): TUpdateNote {
     const existingNote = (await Note.findById(id)) as INoteDocument;
 
     if (!existingNote) {
@@ -39,6 +39,7 @@ export class NoteService {
     //   return null;
     // }
     existingNote.note = note;
+    existingNote.hash = hash;
     existingNote.save();
     return existingNote.toObject() as INoteDocument;
   }

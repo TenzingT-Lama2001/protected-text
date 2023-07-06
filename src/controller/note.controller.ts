@@ -43,7 +43,9 @@ export class NoteController {
       throw new Error(ReasonPhrases.FORBIDDEN);
     }
     if (existingNote?.hash === previousHash) {
-      res.json({ existingNote });
+      res.status(HTTP_STATUS.OK).json({
+        note: existingNote,
+      });
     }
     const updatedNote = await NoteService.updateNote(id, note, hash);
     if (!updatedNote) {
