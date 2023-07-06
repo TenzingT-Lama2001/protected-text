@@ -1,11 +1,11 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 import ptLogger from '@logger';
-import HTTP_STATUS from 'http-status-codes';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.middleware';
+import { V1Routes } from './route/v1';
 
 const logger = ptLogger.child({ file: __filename });
-const SERVER_PORT = process.env.PORT || 3001;
+const SERVER_PORT = process.env.PORT || 3000;
 export class ProtectedTextServer {
   private app: Application;
 
@@ -18,10 +18,7 @@ export class ProtectedTextServer {
     this.app.use(express.json());
     this.app.use(cors({ origin: ['http://localhost:3001'], credentials: true }));
 
-    this.app.get('/', (_req, res, _next) => {
-      res.status(HTTP_STATUS.BAD_REQUEST);
-      throw new Error('Bad req');
-    });
+    this.app.use('/api/v1', new V1Routes().router);
     // error handling middleware
     this.app.use(notFoundHandler);
     this.app.use(errorHandler);

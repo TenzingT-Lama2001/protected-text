@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import config from 'config';
-import { IDbConfig } from '@interface/config.interface';
 import ptLogger from '@logger';
+import { IDbConfig } from '@interface/config/config.interface';
 
 const dbConfig = config.get('db') as IDbConfig;
 const logger = ptLogger.child({ file: __filename });

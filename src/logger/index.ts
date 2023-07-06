@@ -1,6 +1,6 @@
 import { createLogger, format, transports } from 'winston';
 import config from 'config';
-import { ILoggerConfig } from 'src/interface/config.interface';
+import { ILoggerConfig } from '@interface/config/config.interface';
 import pkg from '../../package.json';
 
 const { combine, timestamp, json, errors, prettyPrint, metadata } = format;
