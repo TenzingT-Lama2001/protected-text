@@ -1,15 +1,12 @@
-import Joi from 'joi';
+import { body } from 'express-validator';
 
-const encryptionSchema = {
-  encrypt: Joi.object().keys({
-    note: Joi.string().required(),
-    secretKey: Joi.string().required(),
-  }),
+const commonSchema = [
+  body('note').notEmpty().withMessage('Note is required'),
+  body('secretKey').notEmpty().withMessage('Secret Key is required'),
+];
 
-  decrypt: Joi.object().keys({
-    note: Joi.string().required(),
-    secretKey: Joi.string().required(),
-  }),
-};
+const encryptionSchema = commonSchema;
 
-export default encryptionSchema;
+const decryptionSchema = commonSchema;
+
+export { encryptionSchema, decryptionSchema };

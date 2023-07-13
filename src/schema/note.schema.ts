@@ -1,24 +1,20 @@
-import Joi from 'joi';
+import { body, param } from 'express-validator';
 
-const notesSchema = {
-  post: Joi.object().keys({
-    note: Joi.string().required(),
-    hash: Joi.string().required(),
-  }),
+const commonSchema = param('id').notEmpty().withMessage('ID is required');
 
-  get: Joi.object().keys({
-    id: Joi.string().required(),
-  }),
+const notesGetSchema = [commonSchema];
 
-  patch: Joi.object().keys({
-    note: Joi.string().required(),
-    previousHash: Joi.string().required(),
-    hash: Joi.string().required(),
-  }),
+const notesDeleteSchema = [commonSchema];
 
-  delete: Joi.object().keys({
-    id: Joi.string().required(),
-  }),
-};
+const notesPostSchema = [
+  body('note').notEmpty().withMessage('Note is required'),
+  body('hash').notEmpty().withMessage('Hash is required'),
+];
 
-export default notesSchema;
+const notesPatchSchema = [
+  body('note').notEmpty().withMessage('Note is required'),
+  body('previousHash').notEmpty().withMessage('Previous hash is required'),
+  body('hash').notEmpty().withMessage('Hash is required'),
+];
+
+export { notesGetSchema, notesDeleteSchema, notesPostSchema, notesPatchSchema };

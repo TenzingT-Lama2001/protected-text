@@ -1,19 +1,24 @@
 import { NextFunction, Request, Response } from 'express';
-import Joi from 'joi';
+import { validationResult, ValidationChain } from 'express-validator';
 
-type PropertyType = 'body' | 'params' | 'query';
-const validateSchema = (schema: Joi.Schema, property: PropertyType) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    const { error } = schema.validate(req[property]);
-    const valid = error == null;
+const validateSchema = (schema: ValidationChain[]) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await Promise.all(schema.map((validation) => validation.run(req)));
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        const errorMsg = errors
+          .array()
+          .map((err) => err.msg)
+          .toString();
 
-    if (valid) next();
-    else {
-      const { details } = error;
-      const message = details.map((i) => i.message).join(',');
-      res.status(422).json({ error: message });
+        res.status(400);
+        throw new Error(errorMsg);
+      }
+      next();
+    } catch (error) {
+      next(error);
     }
   };
 };
-
 export default validateSchema;
