@@ -1,12 +1,8 @@
 import { body } from 'express-validator';
 
-const commonSchema = [
+const encryptionDecryptionSchema = [
   body('note').notEmpty().withMessage('Note is required'),
   body('secretKey').notEmpty().withMessage('Secret Key is required'),
 ];
 
-const encryptionSchema = commonSchema;
-
-const decryptionSchema = commonSchema;
-
-export { encryptionSchema, decryptionSchema };
+export { encryptionDecryptionSchema };
