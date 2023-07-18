@@ -7,7 +7,6 @@ export class EncryptionController {
     const { note, secretKey } = req.body;
     const siteHash = EncryptionService.hash(req.baseUrl);
 
-    console.log(siteHash);
     const encryptedNote = await EncryptionService.encrypt(note, secretKey, siteHash);
     const hash = await EncryptionService.hash(note);
     res.status(HTTP_STATUS.CREATED).json({
@@ -18,7 +17,7 @@ export class EncryptionController {
 
   public static async decrypt(req: Request, res: Response) {
     const { note, secretKey } = req.body;
-    console.log(req.baseUrl);
+
     const siteHash = EncryptionService.hash(req.baseUrl);
     const decryptedNote = await EncryptionService.decrypt(note, secretKey, siteHash);
     res.status(HTTP_STATUS.CREATED).json({
