@@ -16,9 +16,9 @@ const validateSchema = (schema: ValidationChain[]) => {
         .map((err) => err.msg)
         .toString();
       res.status(HTTP_STATUS.BAD_REQUEST);
-      throw new Error(errorMsg);
+      return next(new Error(errorMsg));
     }
-    next();
+    return next();
   };
 };
 export default validateSchema;
