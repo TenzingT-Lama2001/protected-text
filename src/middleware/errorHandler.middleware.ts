@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import ptLogger from '@logger';
 import HTTP_STATUS from 'http-status-codes';
 import { isDevEnv } from 'config/default';
+import { CustomError } from 'src/error/custom.error';
 
 const logger = ptLogger.child({ file: __filename });
 export function notFoundHandler(req: Request, res: Response, next: NextFunction) {
@@ -12,6 +13,19 @@ export function notFoundHandler(req: Request, res: Response, next: NextFunction)
 
 export function errorHandler(error: Error, req: Request, res: Response, _next: NextFunction) {
   logger.error('Error occurred', { error });
+  if (error instanceof CustomError) {
+    const { details, message, name, cause, statusCode, stack } = error;
+    res.status(statusCode);
+    const errorRes: Partial<CustomError> = { name, message, details };
+    if (cause) {
+      errorRes.cause = cause;
+    }
+    if (isDevEnv) {
+      errorRes.stack = stack;
+    }
+    return res.send(errorRes);
+  }
+
   const { message, name, cause, stack } = error;
   const statusCode = res.statusCode >= 400 ? res.statusCode : 500;
   res.status(statusCode);
