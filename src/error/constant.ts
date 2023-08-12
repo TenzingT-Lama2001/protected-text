@@ -1,6 +1,6 @@
 export const errorList = {
-  validationError: {
-    message: 'Validation failed',
+  validation: {
+    message: 'Oops! There seems to be an issue with your input. Please review and correct the highlighted field.',
     cause: 'VALIDATION_ERROR',
   },
 };
