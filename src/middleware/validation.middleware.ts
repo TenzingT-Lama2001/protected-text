@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { validationResult, ValidationChain } from 'express-validator';
-import HTTP_STATUS from 'http-status-codes';
+import { ValidationError } from 'src/error/validation.error';
 
 const validateSchema = (schema: ValidationChain[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -11,14 +11,12 @@ const validateSchema = (schema: ValidationChain[]) => {
     await Promise.all(promises);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const errorMsg = errors
-        .array()
-        .map((err) => err.msg)
-        .toString();
-      res.status(HTTP_STATUS.BAD_REQUEST);
-      return next(new Error(errorMsg));
+      const errorDetails = errors.array() as [];
+      const validationErrorResponse = new ValidationError(errorDetails);
+      return next(validationErrorResponse);
     }
     return next();
   };
 };
+
 export default validateSchema;
