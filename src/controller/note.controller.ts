@@ -17,8 +17,8 @@ export class NoteController {
   }
 
   public static async postNote(req: Request, res: Response) {
-    const { note, hash } = req.body;
-    const newNote = await NoteService.postNote(note, hash);
+    const { note, hash, id } = req.body;
+    const newNote = await NoteService.postNote(id, note, hash);
     res.status(HTTP_STATUS.CREATED).json({
       note: newNote,
     });

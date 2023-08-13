@@ -12,8 +12,8 @@ export class NoteService {
     return existingNote.toObject() as INoteDocument;
   }
 
-  public static async postNote(note: string, hash: string): TPostNote {
-    const newNote = await Note.create({ note, hash });
+  public static async postNote(id: string, note: string, hash: string): TPostNote {
+    const newNote = await Note.create({ _id: id, note, hash });
 
     return newNote.toObject() as INoteDocument;
   }
