@@ -3,6 +3,7 @@ import { body } from 'express-validator';
 const notesPostSchema = [
   body('note').notEmpty().withMessage('Note is required'),
   body('hash').notEmpty().withMessage('Hash is required'),
+  body('id').notEmpty().withMessage('Id is required'),
 ];
 
 const notesPatchSchema = [
