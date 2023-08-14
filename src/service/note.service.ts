@@ -3,7 +3,7 @@ import Note from 'src/model/note.model';
 
 export class NoteService {
   public static async getNote(id: string): TGetNote {
-    const existingNote = (await Note.findById(id)) as INoteDocument;
+    const existingNote = (await Note.findOne({ id })) as INoteDocument;
 
     if (!existingNote) {
       return null;
@@ -19,17 +19,11 @@ export class NoteService {
   }
 
   public static async deleteNote(id: string): TDeleteNote {
-    const existingNote = (await Note.findById(id)) as INoteDocument;
-
-    if (!existingNote) {
-      return null;
-    }
-
-    return Note.findByIdAndDelete(id);
+    return Note.findOneAndDelete({ id });
   }
 
   public static async updateNote(id: string, note: string, hash: string): TUpdateNote {
-    const existingNote = (await Note.findById(id)) as INoteDocument;
+    const existingNote = (await Note.findOne({ id })) as INoteDocument;
 
     if (!existingNote) {
       return null;
