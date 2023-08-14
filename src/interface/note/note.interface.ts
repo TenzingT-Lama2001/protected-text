@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { Document } from 'mongoose';
 
 export interface INote {
+  key: string;
   note: string;
   hash: string;
 }
