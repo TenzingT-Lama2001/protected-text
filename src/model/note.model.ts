@@ -2,7 +2,7 @@ import mongoose, { Model, Schema } from 'mongoose';
 import { INoteDocument } from '@interface/note/note.interface';
 
 const NoteSchema = new Schema<INoteDocument>({
-  _id: {
+  id: {
     type: String,
     required: true,
   },
@@ -19,5 +19,3 @@ const NoteSchema = new Schema<INoteDocument>({
 type NoteModel = Model<INoteDocument>;
 const Note = mongoose.model<NoteModel>('Note', NoteSchema);
 export default Note;
-
-// take site from body and make the site the _id
