@@ -2,13 +2,11 @@ import { Request, Response } from 'express';
 import { Document } from 'mongoose';
 
 export interface INote {
-  id: string;
+  key: string;
   note: string;
   hash: string;
 }
-export interface INoteDocument extends INote, Document {
-  id: string;
-}
+export interface INoteDocument extends INote, Document {}
 
 export interface INoteController {
   getNote(_req: Request, _res: Response): Promise<void>;
