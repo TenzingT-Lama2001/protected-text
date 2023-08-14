@@ -2,9 +2,10 @@ import mongoose, { Model, Schema } from 'mongoose';
 import { INoteDocument } from '@interface/note/note.interface';
 
 const NoteSchema = new Schema<INoteDocument>({
-  id: {
+  key: {
     type: String,
     required: true,
+    unique: true,
   },
   note: {
     type: String,
