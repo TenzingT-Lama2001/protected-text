@@ -2,12 +2,12 @@ import { Request, Response } from 'express';
 import { Document } from 'mongoose';
 
 export interface INote {
-  _id: string;
+  id: string;
   note: string;
   hash: string;
 }
 export interface INoteDocument extends INote, Document {
-  _id: string;
+  id: string;
 }
 
 export interface INoteController {
