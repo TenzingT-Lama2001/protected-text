@@ -22,9 +22,10 @@ export class EncryptionController {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
         message: 'Not Authorized',
       });
+    } else {
+      res.status(HTTP_STATUS.OK).json({
+        note: decryptedNote,
+      });
     }
-    res.status(HTTP_STATUS.OK).json({
-      note: decryptedNote,
-    });
   }
 }
