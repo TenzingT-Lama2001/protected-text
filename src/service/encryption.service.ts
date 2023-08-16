@@ -1,8 +1,7 @@
 import CryptoJS from 'crypto-js';
 
 export type TDecryptNote = {
-  success: boolean;
-  decryptedNote?: string;
+  decryptedNote: string | null;
 };
 
 export class EncryptionService {
@@ -21,17 +20,16 @@ export class EncryptionService {
       if (decryptedContent.indexOf(keyHash, decryptedContent.length - keyHash.length) !== -1) {
         decryptedNote = decryptedContent.substring(0, decryptedContent.length - keyHash.length);
         return {
-          success: true,
           decryptedNote,
         };
       }
     } catch (err) {
       return {
-        success: false,
+        decryptedNote: null,
       };
     }
     return {
-      success: false,
+      decryptedNote: null,
     };
   }
 

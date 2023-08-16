@@ -17,8 +17,8 @@ export class EncryptionController {
   public static async decrypt(req: Request, res: Response) {
     const { note, secretKey, key } = req.body;
     const keyHash = EncryptionService.hash(key);
-    const { success, decryptedNote } = EncryptionService.decrypt(note, secretKey, keyHash);
-    if (!success) {
+    const { decryptedNote } = EncryptionService.decrypt(note, secretKey, keyHash);
+    if (!decryptedNote) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
         message: 'Not Authorized',
       });
