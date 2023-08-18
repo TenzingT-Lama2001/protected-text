@@ -20,10 +20,11 @@ export class EncryptionService {
           decryptedNote,
         };
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as Error;
       return {
         decryptedNote: null,
-        message: err.message,
+        message: error.message,
       };
     }
     return {
