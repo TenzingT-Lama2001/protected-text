@@ -1,9 +1,5 @@
+import { TDecryptNote } from '@interface/encryption/encryption.interface';
 import CryptoJS from 'crypto-js';
-
-export type TDecryptNote = {
-  decryptedNote: string | null;
-  message?: string;
-};
 
 export class EncryptionService {
   public static encrypt(note: string, secretKey: string, keyHash: string): string {
