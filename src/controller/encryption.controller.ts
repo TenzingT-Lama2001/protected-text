@@ -4,10 +4,11 @@ import { EncryptionService } from 'src/service/encryption.service';
 
 export class EncryptionController {
   public static async encrypt(req: Request, res: Response) {
-    const { note, secretKey, key } = req.body;
-    const keyHash = EncryptionService.hash(key);
+    const { note, secretKey, noteId } = req.body;
+    const keyHash = EncryptionService.hash(noteId);
     const encryptedNote = EncryptionService.encrypt(note, secretKey, keyHash);
-    const hash = EncryptionService.hashContent(note, secretKey);
+    const secretKeyHash = EncryptionService.hash(secretKey);
+    const hash = EncryptionService.hash(note + secretKeyHash);
     res.status(HTTP_STATUS.CREATED).json({
       note: encryptedNote,
       hash,
@@ -15,8 +16,8 @@ export class EncryptionController {
   }
 
   public static async decrypt(req: Request, res: Response) {
-    const { note, secretKey, key } = req.body;
-    const keyHash = EncryptionService.hash(key);
+    const { note, secretKey, noteId } = req.body;
+    const keyHash = EncryptionService.hash(noteId);
     const { decryptedNote } = EncryptionService.decrypt(note, secretKey, keyHash);
     if (!decryptedNote) {
       res.status(HTTP_STATUS.UNAUTHORIZED).json({
