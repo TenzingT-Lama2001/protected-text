@@ -2,6 +2,7 @@ import CryptoJS from 'crypto-js';
 
 export type TDecryptNote = {
   decryptedNote: string | null;
+  message?: string;
 };
 
 export class EncryptionService {
@@ -17,15 +18,16 @@ export class EncryptionService {
 
     try {
       decryptedContent = CryptoJS.AES.decrypt(encryptedNote, secretKey).toString(CryptoJS.enc.Utf8);
-      if (decryptedContent.indexOf(keyHash, decryptedContent.length - keyHash.length) !== -1) {
+      if (decryptedContent.endsWith(keyHash)) {
         decryptedNote = decryptedContent.substring(0, decryptedContent.length - keyHash.length);
         return {
           decryptedNote,
         };
       }
-    } catch (err) {
+    } catch (err: any) {
       return {
         decryptedNote: null,
+        message: err.message,
       };
     }
     return {
@@ -34,11 +36,6 @@ export class EncryptionService {
   }
 
   public static hash(payload: string): string {
-    const hash = CryptoJS.SHA512(payload).toString();
-    return hash;
-  }
-
-  public static hashContent(note: string, secretKey: string, dbVersion = 2) {
-    return CryptoJS.SHA512(note + CryptoJS.SHA512(secretKey).toString()).toString() + dbVersion;
+    return CryptoJS.SHA512(payload).toString();
   }
 }
