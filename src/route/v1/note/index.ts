@@ -8,9 +8,9 @@ export class NoteRoutes {
   public router: Router = express.Router();
 
   constructor() {
-    this.router.get('/:key', asyncHandler(NoteController.getNote));
+    this.router.get('/:noteId', asyncHandler(NoteController.getNote));
     this.router.post('/', validateSchema(notesPostSchema), asyncHandler(NoteController.postNote));
-    this.router.delete('/:key', asyncHandler(NoteController.deleteNote));
-    this.router.patch('/:key', validateSchema(notesPatchSchema), asyncHandler(NoteController.updateNote));
+    this.router.delete('/:noteId', asyncHandler(NoteController.deleteNote));
+    this.router.patch('/:noteId', validateSchema(notesPatchSchema), asyncHandler(NoteController.updateNote));
   }
 }

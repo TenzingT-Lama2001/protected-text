@@ -1,18 +1,38 @@
+import { TDecryptNote } from '@interface/encryption/encryption.interface';
 import CryptoJS from 'crypto-js';
 
 export class EncryptionService {
-  public static encrypt(note: string, secretKey: string): string {
-    const encryptedNote = CryptoJS.AES.encrypt(note, secretKey).toString();
+  public static encrypt(note: string, secretKey: string, noteIdHash: string): string {
+    // encrypt(content + noteIdHash, password)
+    const encryptedNote = CryptoJS.AES.encrypt(String(note + noteIdHash), secretKey).toString();
     return encryptedNote;
   }
 
-  public static decrypt(note: string, secretKey: string): string {
-    const decryptedText = CryptoJS.AES.decrypt(note, secretKey).toString(CryptoJS.enc.Utf8);
-    return decryptedText;
+  public static decrypt(encryptedNote: string, secretKey: string, noteIdHash: string): TDecryptNote {
+    let decryptedContent = '';
+    let decryptedNote = '';
+
+    try {
+      decryptedContent = CryptoJS.AES.decrypt(encryptedNote, secretKey).toString(CryptoJS.enc.Utf8);
+      if (decryptedContent.endsWith(noteIdHash)) {
+        decryptedNote = decryptedContent.substring(0, decryptedContent.length - noteIdHash.length);
+        return {
+          decryptedNote,
+        };
+      }
+    } catch (err: unknown) {
+      const error = err as Error;
+      return {
+        decryptedNote: null,
+        message: error.message,
+      };
+    }
+    return {
+      decryptedNote: null,
+    };
   }
 
-  public static hash(note: string): string {
-    const hash = CryptoJS.SHA512(note).toString();
-    return hash;
+  public static hash(payload: string): string {
+    return CryptoJS.SHA512(payload).toString();
   }
 }
