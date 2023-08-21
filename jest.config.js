@@ -9,4 +9,12 @@ module.exports = {
   coverageProvider: 'v8',
   moduleFileExtensions: ['ts', 'js'],
   roots: ['<rootDir>/src'],
+  coverageThreshold: {
+    global: {
+      branches: 85,
+      functions: 85,
+      lines: 85,
+      statements: 85,
+    },
+  },
 };
