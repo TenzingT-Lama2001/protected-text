@@ -1,4 +1,5 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
+
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
@@ -16,5 +17,14 @@ module.exports = {
       lines: 85,
       statements: 85,
     },
+  },
+  moduleNameMapper: {
+    '@controller/(.*)': '<rootDir>/src/controller/$1',
+    '@service/(.*)': '<rootDir>/src/service/$1',
+    '@middleware/(.*)': '<rootDir>/src/middleware/$1',
+    '@model/(.*)': '<rootDir>/src/model/$1',
+    '@route/(.*)': '<rootDir>/src/route/$1',
+    '@interface/(.*)': '<rootDir>/src/interface/$1',
+    '@schema/(.*)': '<rootDir>/src/schema/$1',
   },
 };
