@@ -1,15 +1,15 @@
 {
     "compilerOptions": {
       "baseUrl": ".",
-      "target": "ES2022",                                     /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-      "module": "CommonJS",                                /* Specify what module code is generated. */
+      "target": "ES2022",                                     
+      "module": "CommonJS",                                
       "moduleResolution": "node16",
-      "outDir": "dist",                                    /* Specify an output folder for all emitted files. */
-      "removeComments": true,                              /* Disable emitting comments. */
+      "outDir": "dist",                                    
+      "removeComments": true,                              
       "esModuleInterop": true,   
-      "resolveJsonModule": true,                          /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */
-      "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
-      "strict": true,                                      /* Enable all strict type-checking options. */
+      "resolveJsonModule": true,                         
+      "forceConsistentCasingInFileNames": true,            
+      "strict": true,                                      
       "skipLibCheck": true,
       "paths": {
         "@controller/*": ["src/controller/*"],
@@ -19,10 +19,9 @@
         "@service/*": ["src/service/*"],
         "@route/*": ["src/route/*"],
         "@interface/*": ["src/interface/*"],
-        "@logger": ["src/logger/"],
-
+        "@logger": ["src/logger/"]
       }
     },
     "include": ["src/**/*", "config"],
-    "exclude": ["node_modules", "dist", "__tests__", "coverage"],
-  }
+    "exclude": ["node_modules", "dist", "__tests__", "coverage"]
+}
