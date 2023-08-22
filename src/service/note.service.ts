@@ -1,5 +1,5 @@
 import { INoteDocument, TDeleteNote, TGetNote, TPostNote, TUpdateNote } from '@interface/note/note.interface';
-import Note from 'src/model/note.model';
+import Note from '@model/note.model';
 
 export class NoteService {
   public static async getNote(noteId: string): TGetNote {

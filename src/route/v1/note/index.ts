@@ -1,5 +1,5 @@
+import { NoteController } from '@controller/note.controller';
 import express, { Router } from 'express';
-import { NoteController } from 'src/controller/note.controller';
 import asyncHandler from 'express-async-handler';
 import validateSchema from 'src/middleware/validation.middleware';
 import { notesPatchSchema, notesPostSchema } from 'src/schema/note.schema';
