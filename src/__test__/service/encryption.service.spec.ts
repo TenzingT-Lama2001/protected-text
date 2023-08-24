@@ -1,6 +1,5 @@
 import { EncryptionService } from '@service/encryption.service';
-
-jest.mock('../../service/encryption.service');
+import CryptoJS from 'crypto-js';
 
 describe('EncryptionService', () => {
   describe('encrypt', () => {
@@ -9,12 +8,11 @@ describe('EncryptionService', () => {
       const note = 'myNote';
       const secretKey = 'mySecret123';
       const noteIdHash = 'myNoteIdHash';
-      const mockEncryptedNote = 'myEncryptedNote';
-      (EncryptionService.encrypt as jest.Mock).mockReturnValue(mockEncryptedNote);
+      const encryptSpy = jest.spyOn(CryptoJS.AES, 'encrypt');
       // Act
-      const result = EncryptionService.encrypt(note, secretKey, noteIdHash);
+      EncryptionService.encrypt(note, secretKey, noteIdHash);
       // Assert
-      expect(result).toBe(mockEncryptedNote);
+      expect(encryptSpy).toHaveBeenCalledWith(String(note + noteIdHash), secretKey);
     });
   });
 });
