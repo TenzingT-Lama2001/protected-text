@@ -3,8 +3,7 @@ import { NoteService } from '@service/note.service';
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 
-jest.mock('../../service/note.service'); // Mock NoteService module
-
+jest.mock('../../service/note.service');
 describe('NoteController', () => {
   describe('getNote', () => {
     it('should return a note if it exists', async () => {
@@ -18,7 +17,6 @@ describe('NoteController', () => {
         __v: 0,
       };
 
-      // Mocking NoteService.getNote to return a mock note
       (NoteService.getNote as jest.Mock).mockResolvedValue(mockNote);
 
       const mockRequest = {
@@ -39,6 +37,37 @@ describe('NoteController', () => {
       expect(NoteService.getNote).toHaveBeenCalledWith(mockNoteId);
       expect(mockResponse.status).toHaveBeenCalledWith(200);
       expect(mockResponse.json).toHaveBeenCalledWith({ note: mockNote });
+    });
+    it('should return 404 if note is not found', async () => {
+      // Arrange
+      const mockNoteId = 'site222';
+
+      (NoteService.getNote as jest.Mock).mockResolvedValue(null);
+      const mockRequest = {
+        params: {
+          noteId: mockNoteId,
+        },
+      } as unknown as Request;
+
+      const mockResponse = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      } as unknown as Response;
+
+      // Act
+      try {
+        await NoteController.getNote(mockRequest, mockResponse);
+        throw new Error('Error did not hit');
+      } catch (err) {
+        // Assert
+        const error = err as Error;
+        expect(error.message).not.toEqual('Error did not hit');
+        expect(error).toHaveProperty('name');
+        expect(error).toHaveProperty('message');
+        expect(error).toHaveProperty('stack');
+        expect(NoteService.getNote).toHaveBeenCalledWith(mockNoteId);
+        expect(mockResponse.status).toHaveBeenCalledWith(404);
+      }
     });
   });
 });
