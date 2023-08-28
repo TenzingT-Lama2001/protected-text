@@ -62,6 +62,7 @@ describe('NoteController', () => {
         // Assert
         const error = err as Error;
         expect(error.message).not.toEqual('Error did not hit');
+        expect(error.message).toEqual('No notes found');
         expect(error).toHaveProperty('name');
         expect(error).toHaveProperty('message');
         expect(error).toHaveProperty('stack');
