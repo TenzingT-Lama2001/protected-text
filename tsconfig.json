@@ -19,7 +19,8 @@
         "@service/*": ["src/service/*"],
         "@route/*": ["src/route/*"],
         "@interface/*": ["src/interface/*"],
-        "@logger": ["src/logger/"]
+        "@logger": ["src/logger/"],
+        "@config/*": ["config/*"]
       }
     },
     "include": ["src/**/*", "config"],
