@@ -1,7 +1,8 @@
+import { EncryptionController } from '@controller/encryption.controller';
+import validateSchema from '@middleware/validation.middleware';
 import express, { Router } from 'express';
 import asyncHandler from 'express-async-handler';
-import { EncryptionController } from 'src/controller/encryption.controller';
-import validateSchema from 'src/middleware/validation.middleware';
+
 import { encryptionDecryptionSchema } from 'src/schema/encryption.schema';
 
 export class EncryptionRoutes {

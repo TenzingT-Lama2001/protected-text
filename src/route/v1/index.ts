@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { NoteRoutes } from './note/index';
+import { NoteRoutes } from './note';
 import { EncryptionRoutes } from './encryption';
 
 export class V1Routes {

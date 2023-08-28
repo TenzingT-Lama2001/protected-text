@@ -1,6 +1,6 @@
+import { EncryptionService } from '@service/encryption.service';
 import { Request, Response } from 'express';
 import HTTP_STATUS from 'http-status-codes';
-import { EncryptionService } from 'src/service/encryption.service';
 
 export class EncryptionController {
   public static async encrypt(req: Request, res: Response) {

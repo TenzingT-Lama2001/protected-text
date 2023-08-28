@@ -1,5 +1,5 @@
+import { NoteService } from '@service/note.service';
 import { NextFunction, Request, Response } from 'express';
-import { NoteService } from 'src/service/note.service';
 import { StatusCodes as HTTP_STATUS, ReasonPhrases } from 'http-status-codes';
 
 export class NoteController {

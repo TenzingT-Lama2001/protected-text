@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import ptLogger from '@logger';
 import HTTP_STATUS from 'http-status-codes';
-import { isDevEnv } from 'config/default';
 import { CustomError } from 'src/error/custom.error';
+import { isDevEnv } from '@config/default';
 
 const logger = ptLogger.child({ file: __filename });
 
