@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import HTTP_STATUS from 'http-status-codes';
 
 export class EncryptionController {
-  public static async encrypt(req: Request, res: Response) {
+  public static encrypt(req: Request, res: Response) {
     const { note, secretKey, noteId } = req.body;
     const noteIdHash = EncryptionService.hash(noteId);
     const encryptedNote = EncryptionService.encrypt(note, secretKey, noteIdHash);
@@ -15,7 +15,7 @@ export class EncryptionController {
     });
   }
 
-  public static async decrypt(req: Request, res: Response) {
+  public static decrypt(req: Request, res: Response) {
     const { note, secretKey, noteId } = req.body;
     const noteIdHash = EncryptionService.hash(noteId);
     const { message, decryptedNote } = EncryptionService.decrypt(note, secretKey, noteIdHash);
