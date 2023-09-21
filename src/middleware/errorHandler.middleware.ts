@@ -28,5 +28,6 @@ export function errorHandler(error: CustomError, _req: Request, res: Response, _
   if (isDevEnv) {
     errorRes.stack = stack;
   }
+
   return res.send(errorRes);
 }

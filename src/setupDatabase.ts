@@ -7,10 +7,10 @@ const dbConfig = config.get('db') as IDbConfig;
 const logger = ptLogger.child({ file: __filename });
 
 export default async () => {
-  const connect = async () => {
+  const connectDb = async () => {
     try {
       mongoose.set('strictQuery', false);
-      mongoose.connection.on('disconnected', connect);
+      mongoose.connection.on('disconnected', connectDb);
       await mongoose.connect(dbConfig.databaseUrl);
       logger.info('Successfully connected to database');
     } catch (error) {
@@ -18,6 +18,6 @@ export default async () => {
       process.exit(1);
     }
   };
-  const conn = await connect();
+  const conn = await connectDb();
   return conn;
 };

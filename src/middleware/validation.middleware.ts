@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { validationResult, ValidationChain } from 'express-validator';
-import { ValidationError } from 'src/error/validation.error';
+import { ValidationError } from '@src/error/validation.error';
 
 const validateSchema = (schema: ValidationChain[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {

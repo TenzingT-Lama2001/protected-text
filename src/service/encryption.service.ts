@@ -11,7 +11,7 @@ export class EncryptionService {
   public static decrypt(encryptedNote: string, secretKey: string, noteIdHash: string): TDecryptNote {
     let decryptedContent = '';
     let decryptedNote = '';
-
+    const decryptErrorMessage = 'Could not decrypt';
     try {
       decryptedContent = CryptoJS.AES.decrypt(encryptedNote, secretKey).toString(CryptoJS.enc.Utf8);
       if (decryptedContent.endsWith(noteIdHash)) {
@@ -20,15 +20,15 @@ export class EncryptionService {
           decryptedNote,
         };
       }
-    } catch (err: unknown) {
-      const error = err as Error;
+    } catch (err) {
       return {
         decryptedNote: null,
-        message: error.message,
+        message: decryptErrorMessage,
       };
     }
     return {
       decryptedNote: null,
+      message: decryptErrorMessage,
     };
   }
 

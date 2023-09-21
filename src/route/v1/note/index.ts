@@ -1,8 +1,8 @@
 import { NoteController } from '@controller/note.controller';
 import express, { Router } from 'express';
 import asyncHandler from 'express-async-handler';
-import validateSchema from 'src/middleware/validation.middleware';
-import { notesPatchSchema, notesPostSchema } from 'src/schema/note.schema';
+import validateSchema from '@middleware/validation.middleware';
+import { notesPatchSchema, notesPostSchema } from '@schema/note.schema';
 
 export class NoteRoutes {
   public router: Router = express.Router();

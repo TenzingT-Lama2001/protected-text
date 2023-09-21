@@ -1,5 +1,5 @@
 import { NoteService } from '@service/note.service';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { StatusCodes as HTTP_STATUS, ReasonPhrases } from 'http-status-codes';
 
 export class NoteController {
@@ -19,12 +19,13 @@ export class NoteController {
   public static async postNote(req: Request, res: Response) {
     const { note, hash, noteId } = req.body;
     const newNote = await NoteService.postNote(noteId, note, hash);
+
     res.status(HTTP_STATUS.CREATED).json({
       note: newNote,
     });
   }
 
-  public static async deleteNote(req: Request, res: Response, _next: NextFunction) {
+  public static async deleteNote(req: Request, res: Response) {
     const { noteId } = req.params;
     const result = await NoteService.deleteNote(noteId);
     if (!result) {
@@ -38,20 +39,23 @@ export class NoteController {
     const { noteId } = req.params;
     const { note, previousHash, hash } = req.body;
     const existingNote = await NoteService.getNote(noteId);
+
+    if (!existingNote) {
+      res.status(404);
+      throw new Error('No notes found');
+    }
+
     if (existingNote?.hash !== previousHash) {
       res.status(HTTP_STATUS.FORBIDDEN);
       throw new Error(ReasonPhrases.FORBIDDEN);
     }
-    if (existingNote?.hash === previousHash) {
+    if (existingNote?.hash === hash) {
       res.status(HTTP_STATUS.OK).json({
         note: existingNote,
       });
+      return;
     }
     const updatedNote = await NoteService.updateNote(noteId, note, hash);
-    if (!updatedNote) {
-      res.status(404);
-      throw new Error('No notes found');
-    }
     res.status(HTTP_STATUS.OK).json({
       note: updatedNote,
     });

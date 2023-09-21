@@ -7,7 +7,7 @@ import { V1Routes } from './route/v1';
 const logger = ptLogger.child({ file: __filename });
 const SERVER_PORT = process.env.PORT || 3000;
 export class ProtectedTextServer {
-  private app: Application;
+  public app: Application;
 
   constructor() {
     this.app = express();

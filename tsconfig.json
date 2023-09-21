@@ -2,7 +2,7 @@
     "compilerOptions": {
       "baseUrl": ".",
       "target": "ES2022",                                     
-      "module": "CommonJS",                                
+      "module": "Node16",                                
       "moduleResolution": "node16",
       "outDir": "dist",                                    
       "removeComments": true,                              
@@ -20,7 +20,8 @@
         "@route/*": ["src/route/*"],
         "@interface/*": ["src/interface/*"],
         "@logger": ["src/logger/"],
-        "@config/*": ["config/*"]
+        "@config/*": ["config/*"],
+        "@src/*":["src/*"]
       }
     },
     "include": ["src/**/*", "config"],

@@ -2,8 +2,7 @@ import { EncryptionController } from '@controller/encryption.controller';
 import validateSchema from '@middleware/validation.middleware';
 import express, { Router } from 'express';
 import asyncHandler from 'express-async-handler';
-
-import { encryptionDecryptionSchema } from 'src/schema/encryption.schema';
+import { encryptionDecryptionSchema } from '@schema/encryption.schema';
 
 export class EncryptionRoutes {
   public router: Router = express.Router();
