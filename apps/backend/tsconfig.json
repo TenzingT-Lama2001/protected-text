@@ -1,0 +1,21 @@
+{
+  "extends": "tsconfig/backend.json",
+  "compilerOptions": {
+      "baseUrl": ".",
+      "outDir": "./dist",
+      "paths": {
+        "@controller/*": ["src/controller/*"],
+        "@model/*": ["src/model/*"],
+        "@middleware/*": ["src/middleware/*"],
+        "@schema/*": ["src/schema/*"],
+        "@service/*": ["src/service/*"],
+        "@route/*": ["src/route/*"],
+        "@interface/*": ["src/interface/*"],
+        "@logger": ["src/logger/"],
+        "@config/*": ["config/*"],
+        "@src/*":["src/*"]
+      }
+    },
+    "include": ["src/**/*", "config"],
+    "exclude": ["node_modules", "dist", "__tests__", "coverage"]
+}

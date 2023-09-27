@@ -1,0 +1,6 @@
+{
+  //without this setting, eslint throws import/no-unresolved even if the path is working
+  "eslint.workingDirectories": [
+    { "directory": "apps/backend", "changeProcessCWD": true },
+  ]
+}
