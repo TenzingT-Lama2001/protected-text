@@ -1,6 +1,6 @@
-import { TDecryptNote } from '@interface/encryption/encryption.interface';
-import { EncryptionService } from '@service/encryption.service';
 import CryptoJS from 'crypto-js';
+import { decrypt, encrypt, hash } from '../encryption';
+import { TDecryptNote } from '../encryption.interface';
 
 describe('EncryptionService', () => {
   describe('encrypt', () => {
@@ -11,7 +11,7 @@ describe('EncryptionService', () => {
       const noteIdHash = 'myNoteIdHash';
       const encryptSpy = jest.spyOn(CryptoJS.AES, 'encrypt');
       // Act
-      EncryptionService.encrypt(note, secretKey, noteIdHash);
+      encrypt(note, secretKey, noteIdHash);
       // Assert
       expect(encryptSpy).toHaveBeenCalledWith(String(note + noteIdHash), secretKey);
     });
@@ -30,7 +30,7 @@ describe('EncryptionService', () => {
       const decryptedNote = 'latest note for site';
 
       // Act
-      const result = EncryptionService.decrypt(encryptedNote, secretKey, noteIdHash);
+      const result = decrypt(encryptedNote, secretKey, noteIdHash);
 
       // Assert
       expect(decryptSpy).toHaveBeenCalledWith(encryptedNote, secretKey);
@@ -42,7 +42,7 @@ describe('EncryptionService', () => {
       const invalidEncryptedNote = 'myEncryptedNote';
 
       // Act
-      const result = EncryptionService.decrypt(invalidEncryptedNote, secretKey, noteIdHash);
+      const result = decrypt(invalidEncryptedNote, secretKey, noteIdHash);
 
       // Assert
       expect(decryptSpy).toHaveBeenCalledWith(invalidEncryptedNote, secretKey);
@@ -58,7 +58,7 @@ describe('EncryptionService', () => {
         decryptedNote: null,
       };
       try {
-        result = EncryptionService.decrypt(encryptedNote, invalidSecretKey, noteIdHash);
+        result = decrypt(encryptedNote, invalidSecretKey, noteIdHash);
       } catch (err) {
         const error = err as Error;
         expect(error.message).toEqual(errorMessage);
@@ -77,7 +77,7 @@ describe('EncryptionService', () => {
     const hashSpy = jest.spyOn(CryptoJS, 'SHA512');
 
     // Act
-    const result = EncryptionService.hash(payload);
+    const result = hash(payload);
 
     // Assert
     expect(hashSpy).toHaveBeenCalledWith(payload);

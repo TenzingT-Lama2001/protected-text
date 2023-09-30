@@ -4,7 +4,9 @@ import ptLogger from '@logger';
 import { IDbConfig } from '@interface/config/config.interface';
 
 const dbConfig = config.get('db') as IDbConfig;
-const logger = ptLogger.child({ file: __filename });
+const logger = ptLogger.child({
+  file: __filename,
+});
 
 export default async () => {
   const connectDb = async () => {

@@ -1,0 +1,33 @@
+{
+  "name": "encryption-handler",
+  "license": "MIT",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint . --cache --ignore-pattern .gitignore",
+    "lint:fix": "eslint . --ext .ts --cache --ignore-pattern .gitignore --fix",
+    "test": "jest"
+  },
+  "dependencies": {
+    "crypto-js": "^4.1.1"
+  },
+  "devDependencies": {
+    "eslint-config-custom":"*",
+    "@types/crypto-js": "^4.1.1",
+    "tsconfig":"*",
+    "eslint": "^8.41.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.8"
+  },
+  "files": ["dist/**"]
+}
