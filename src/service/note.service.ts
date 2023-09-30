@@ -25,6 +25,7 @@ export class NoteService {
       { $set: { note, hash } }, // Update values
       { new: true }, // Return the updated document
     )) as INoteDocument;
+    console.log('🚀 ~ file: note.service.ts:28 ~ NoteService ~ updateNote ~ existingNote:', existingNote);
     return existingNote;
   }
 }

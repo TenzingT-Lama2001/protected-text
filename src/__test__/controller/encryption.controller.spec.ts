@@ -1,8 +1,10 @@
 import { EncryptionController } from '@controller/encryption.controller';
-import { TDecryptNote, decrypt, encrypt, hash } from 'encryption-handler';
+import { TDecryptNote } from '@interface/encryption/encryption.interface';
+import { EncryptionService } from '@service/encryption.service';
 import { Request, Response } from 'express';
 
-jest.mock('encryption-handler');
+jest.mock('../../service/encryption.service');
+
 describe('EncryptionController', () => {
   const note = 'note';
   const secretKey = 'secretKey';
@@ -14,13 +16,13 @@ describe('EncryptionController', () => {
       const noteIdHash = 'noteIdHash';
       const encryptedNote = 'myEncryptedNote';
       const secretKeyHash = 'hashedSecretKey';
-      const hashed = 'myNoteHash';
+      const hash = 'myNoteHash';
 
-      (hash as jest.Mock)
+      (EncryptionService.hash as jest.Mock)
         .mockReturnValueOnce('noteIdHash')
         .mockReturnValueOnce('hashedSecretKey')
         .mockReturnValue('myNoteHash');
-      (encrypt as jest.Mock).mockReturnValue('myEncryptedNote');
+      (EncryptionService.encrypt as jest.Mock).mockReturnValue('myEncryptedNote');
 
       const mockRequest = {
         body: {
@@ -39,15 +41,15 @@ describe('EncryptionController', () => {
       EncryptionController.encrypt(mockRequest, mockResponse);
 
       // Assert
-      expect(hash).toHaveBeenCalledWith(noteId);
-      expect(encrypt).toHaveBeenCalledWith(note, secretKey, noteIdHash);
-      expect(hash).toHaveBeenCalledWith(secretKey);
-      expect(hash).toHaveBeenCalledWith(note + secretKeyHash);
-      expect(hash).toHaveBeenCalledTimes(3);
+      expect(EncryptionService.hash).toHaveBeenCalledWith(noteId);
+      expect(EncryptionService.encrypt).toHaveBeenCalledWith(note, secretKey, noteIdHash);
+      expect(EncryptionService.hash).toHaveBeenCalledWith(secretKey);
+      expect(EncryptionService.hash).toHaveBeenCalledWith(note + secretKeyHash);
+      expect(EncryptionService.hash).toHaveBeenCalledTimes(3);
       expect(mockResponse.status).toHaveBeenCalledWith(201);
       expect(mockResponse.json).toHaveBeenCalledWith({
         note: encryptedNote,
-        hash: hashed,
+        hash,
       });
     });
   });
@@ -57,13 +59,13 @@ describe('EncryptionController', () => {
     it('should return 401 with message if secret key is invalid', () => {
       // Arrange
       const errorMessage = 'Malformed UTF-8 data';
-      const decrypted: TDecryptNote = {
+      const decrypt: TDecryptNote = {
         decryptedNote: null,
         message: errorMessage,
       };
 
-      (hash as jest.Mock).mockReturnValue(noteIdHash);
-      (decrypt as jest.Mock).mockReturnValue(decrypted);
+      (EncryptionService.hash as jest.Mock).mockReturnValue(noteIdHash);
+      (EncryptionService.decrypt as jest.Mock).mockReturnValue(decrypt);
 
       const mockRequest = {
         body: {
@@ -82,8 +84,8 @@ describe('EncryptionController', () => {
       EncryptionController.decrypt(mockRequest, mockResponse);
 
       // Assert
-      expect(hash).toHaveBeenCalledWith(noteId);
-      expect(decrypt).toHaveBeenCalledWith(note, secretKey, noteIdHash);
+      expect(EncryptionService.hash).toHaveBeenCalledWith(noteId);
+      expect(EncryptionService.decrypt).toHaveBeenCalledWith(note, secretKey, noteIdHash);
       expect(mockResponse.status).toHaveBeenCalledWith(401);
       expect(mockResponse.json).toHaveBeenCalledWith({
         message: errorMessage,
@@ -91,11 +93,11 @@ describe('EncryptionController', () => {
     });
     it('should return the decrypted note', () => {
       // Arrange
-      const decrypted: TDecryptNote = {
+      const decrypt: TDecryptNote = {
         decryptedNote: 'decrypted note',
       };
-      (hash as jest.Mock).mockReturnValue(noteIdHash);
-      (decrypt as jest.Mock).mockReturnValue(decrypted);
+      (EncryptionService.hash as jest.Mock).mockReturnValue(noteIdHash);
+      (EncryptionService.decrypt as jest.Mock).mockReturnValue(decrypt);
       const mockRequest = {
         body: {
           note,
@@ -113,10 +115,10 @@ describe('EncryptionController', () => {
       EncryptionController.decrypt(mockRequest, mockResponse);
 
       // Assert
-      expect(hash).toHaveBeenCalledWith(noteId);
-      expect(decrypt).toHaveBeenCalledWith(note, secretKey, noteIdHash);
+      expect(EncryptionService.hash).toHaveBeenCalledWith(noteId);
+      expect(EncryptionService.decrypt).toHaveBeenCalledWith(note, secretKey, noteIdHash);
       expect(mockResponse.status).toHaveBeenCalledWith(200);
-      expect(mockResponse.json).toHaveBeenCalledWith({ note: decrypted.decryptedNote });
+      expect(mockResponse.json).toHaveBeenCalledWith({ note: decrypt.decryptedNote });
     });
   });
 });
