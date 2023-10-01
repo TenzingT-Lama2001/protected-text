@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import request from 'supertest';
 import { ProtectedTextServer } from '@src/index';
-// import { EncryptionController } from '@controller/encryption.controller';
+import { EncryptionController } from '@controller/encryption.controller';
 
 const server = new ProtectedTextServer();
 const { app } = server;
@@ -20,13 +20,13 @@ describe('EncryptionRoutes', () => {
         noteId: 'testNoteId',
       } as unknown as Request;
 
-      // const encryptionControllerSpy = jest.spyOn(EncryptionController, 'encrypt');
+      const encryptionControllerSpy = jest.spyOn(EncryptionController, 'encrypt');
 
       // Act
       await request(app).post('/api/v1/encrypt').send(requestBody);
 
       // Assert
-      // expect(encryptionControllerSpy).toHaveBeenCalledTimes(1);
+      expect(encryptionControllerSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should throw validation error if request is missing something', async () => {
@@ -35,13 +35,13 @@ describe('EncryptionRoutes', () => {
         note: 'note',
         noteId: 'site',
       };
-      // const encryptionControllerSpy = jest.spyOn(EncryptionController, 'encrypt');
+      const encryptionControllerSpy = jest.spyOn(EncryptionController, 'encrypt');
 
       // Act
       await request(app).post('/api/v1/encrypt').send(mockRequest);
 
       // Assert
-      // expect(encryptionControllerSpy).toHaveBeenCalledTimes(0);
+      expect(encryptionControllerSpy).toHaveBeenCalledTimes(0);
     });
   });
 
@@ -54,13 +54,13 @@ describe('EncryptionRoutes', () => {
         noteId: 'latestSite',
       } as unknown as Request;
 
-      // const encryptionControllerSpy = jest.spyOn(EncryptionController, 'decrypt');
+      const encryptionControllerSpy = jest.spyOn(EncryptionController, 'decrypt');
 
       // Act
       await request(app).post('/api/v1/decrypt').send(requestBody);
 
       // Assert
-      // expect(encryptionControllerSpy).toHaveBeenCalledTimes(1);
+      expect(encryptionControllerSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should throw validation error if request is missing something', async () => {
@@ -70,12 +70,12 @@ describe('EncryptionRoutes', () => {
         secretKey: 'secret123',
       } as unknown as Request;
 
-      // const encryptionControllerSpy = jest.spyOn(EncryptionController, 'decrypt');
+      const encryptionControllerSpy = jest.spyOn(EncryptionController, 'decrypt');
       // Act
       await request(app).post('/api/v1/decrypt').send(requestBody);
 
       // Assert
-      // expect(encryptionControllerSpy).toHaveBeenCalledTimes(0);
+      expect(encryptionControllerSpy).toHaveBeenCalledTimes(0);
     });
   });
 });
