@@ -1,19 +1,28 @@
 'use client';
 
 import React, { ChangeEvent, useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
+import CryptoJS from 'crypto-js';
 import generateUuid from '../utils/generateUuid';
+import { getTitleFromContent } from '../utils/helper';
+import useContentStore from '../store/zustand';
 
 interface Tab {
   id: string;
+  name: string;
   content: string;
 }
 function TextTabs() {
-  const [tabs, setTabs] = useState<Tab[]>([{ id: generateUuid(), content: '' }]);
+  const [tabs, setTabs] = useState<Tab[]>([{ id: generateUuid(), content: '', name: 'Empty Tab' }]);
   const [activeTab, setActiveTab] = useState<string | null>(tabs[0]?.id);
-
+  const { setContent } = useContentStore(
+    useShallow((state) => ({
+      setContent: state.setContent,
+    })),
+  );
   const addTab = () => {
     const newTabId = generateUuid();
-    const newTab: Tab = { id: newTabId, content: '' };
+    const newTab: Tab = { id: newTabId, content: '', name: 'Empty Tab' };
     setTabs([...tabs, newTab]);
     setActiveTab(newTabId);
   };
@@ -32,10 +41,26 @@ function TextTabs() {
   };
 
   const handleTextAreaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const updatedTabs: Tab[] = tabs.map((tab) =>
-      tab.id === activeTab ? { ...tab, content: event.target.value } : tab,
-    );
-    setTabs(updatedTabs);
+    const title = getTitleFromContent(event.target.value);
+
+    setTabs((prevState) => {
+      const updatedTabs: Tab[] = prevState.map((tab) =>
+        tab.id === activeTab ? { ...tab, content: event.target.value, name: title } : tab,
+      );
+      const separator = CryptoJS.SHA512('-- tab separator --').toString();
+      let allTabsContent = '';
+
+      updatedTabs.forEach((tab, index) => {
+        allTabsContent += tab.content;
+        if (index < updatedTabs.length - 1) {
+          allTabsContent += separator;
+        }
+      });
+
+      console.log({ allTabsContent });
+      setContent(allTabsContent);
+      return updatedTabs;
+    });
   };
 
   const renderTabs = () =>
@@ -43,7 +68,7 @@ function TextTabs() {
       <div key={tab.id} className="flex space-x-1 mr-1 text-xs">
         <div className={`relative flex  px-1 mr-1  ${tab.id === activeTab ? 'text-gray bg-white' : 'bg-gray-200'}`}>
           <button type="button" onClick={() => setActiveTab(tab.id)} className="text-xs p-1 rounded-md h-full mr-1">
-            Empty tab
+            {tab.name}
           </button>
           <button
             type="button"
