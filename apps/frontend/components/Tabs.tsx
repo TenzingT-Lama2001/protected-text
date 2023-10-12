@@ -1,11 +1,10 @@
 'use client';
 
 import React, { ChangeEvent, useState } from 'react';
-import { useShallow } from 'zustand/react/shallow';
 import CryptoJS from 'crypto-js';
 import generateUuid from '../utils/generateUuid';
 import { getTitleFromContent } from '../utils/helper';
-import useContentStore from '../store/zustand';
+import { useBoundStore } from '../store/store';
 
 interface Tab {
   id: string;
@@ -15,11 +14,7 @@ interface Tab {
 function TextTabs() {
   const [tabs, setTabs] = useState<Tab[]>([{ id: generateUuid(), content: '', name: 'Empty Tab' }]);
   const [activeTab, setActiveTab] = useState<string | null>(tabs[0]?.id);
-  const { setContent } = useContentStore(
-    useShallow((state) => ({
-      setContent: state.setContent,
-    })),
-  );
+  const setContent = useBoundStore((state) => state.setContent);
   const addTab = () => {
     const newTabId = generateUuid();
     const newTab: Tab = { id: newTabId, content: '', name: 'Empty Tab' };
@@ -87,7 +82,7 @@ function TextTabs() {
         {renderTabs()}
         <button
           type="button"
-          onClick={addTab}
+          onClick={() => addTab()}
           className="bg-[#4F46E5] text-white rounded-sm hover:bg-[#6057ff] flex items-center h-4 w-4 text-center justify-center"
         >
           +
@@ -96,7 +91,7 @@ function TextTabs() {
 
       <textarea
         value={tabs.find((tab) => tab.id === activeTab)?.content}
-        onChange={handleTextAreaChange}
+        onChange={(e) => handleTextAreaChange(e)}
         className="w-full min-h-[28rem] p-2 border border-gray-300 rounded resize-vertical"
       />
     </div>

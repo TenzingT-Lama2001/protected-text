@@ -1,15 +1,10 @@
 import Link from 'next/link';
-import { useShallow } from 'zustand/react/shallow';
-import useContentStore from '../store/zustand';
+import { useBoundStore } from '../store/store';
 
 export default function NavBar() {
-  const { content } = useContentStore(
-    useShallow((state) => ({
-      content: state.content,
-    })),
-  );
+  const content = useBoundStore((state) => state.content);
   const handleOnSave = () => {
-    console.log('Saving content', content);
+    console.log(content);
   };
   return (
     <header>
