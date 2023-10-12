@@ -15,26 +15,12 @@ function TextTabs() {
   const [tabs, setTabs] = useState<Tab[]>([{ id: generateUuid(), content: '', name: 'Empty Tab' }]);
   const [activeTab, setActiveTab] = useState<string | null>(tabs[0]?.id);
   const setContent = useBoundStore((state) => state.setContent);
-
   const addTab = () => {
     const newTabId = generateUuid();
     const newTab: Tab = { id: newTabId, content: '', name: 'Empty Tab' };
     setTabs([...tabs, newTab]);
     setActiveTab(newTabId);
   };
-
-  useEffect(() => {
-    const separator = CryptoJS.SHA512('-- tab separator --').toString();
-    let allTabsContent = '';
-
-    tabs.forEach((tab, index) => {
-      allTabsContent += tab.content;
-      if (index < tabs.length - 1) {
-        allTabsContent += separator;
-      }
-    });
-    setContent(allTabsContent);
-  }, [tabs, setContent]);
 
   const closeTab = (tabId: string) => {
     if (tabs.length === 1) {
@@ -59,6 +45,44 @@ function TextTabs() {
       return updatedTabs;
     });
   };
+
+  useEffect(() => {
+    // Calculate content based on updated tabs
+    const separator = CryptoJS.SHA512('-- tab separator --').toString();
+    let allTabsContent = '';
+
+    tabs.forEach((tab, index) => {
+      allTabsContent += tab.content;
+      if (index < tabs.length - 1) {
+        allTabsContent += separator;
+      }
+    });
+
+    // Update the global state (content) after updating local state (tabs)
+    setContent(allTabsContent);
+  }, [tabs, setContent]);
+  // const handleTextAreaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  //   const title = getTitleFromContent(event.target.value);
+
+  //   setTabs((prevState) => {
+  //     const updatedTabs: Tab[] = prevState.map((tab) =>
+  //       tab.id === activeTab ? { ...tab, content: event.target.value, name: title } : tab,
+  //     );
+  //     const separator = CryptoJS.SHA512('-- tab separator --').toString();
+  //     let allTabsContent = '';
+
+  //     updatedTabs.forEach((tab, index) => {
+  //       allTabsContent += tab.content;
+  //       if (index < updatedTabs.length - 1) {
+  //         allTabsContent += separator;
+  //       }
+  //     });
+
+  //     console.log({ allTabsContent });
+  //     setContent(allTabsContent);
+  //     return updatedTabs;
+  //   });
+  // };
 
   const renderTabs = () =>
     tabs.map((tab) => (
