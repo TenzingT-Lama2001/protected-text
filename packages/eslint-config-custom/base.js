@@ -1,15 +1,12 @@
-const { resolve } = require("node:path");
- 
-const project = resolve(process.cwd(), "tsconfig.json");
-
 module.exports = {
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'import'],
   parserOptions: {
     // project: 'tsconfig.json',
     sourceType: 'module',
     ecmaVersion: 2020,
   },
+  ignorePatterns: ['node_modules/*'],
   root: true,
   env: {
     node: true,
@@ -29,8 +26,7 @@ module.exports = {
   },
   settings: {
     'import/resolver': {
-      typescript: {
-      }, // enable TypeScript-aware module resolution
+      typescript: {}, // enable TypeScript-aware module resolution
     },
   },
   rules: {

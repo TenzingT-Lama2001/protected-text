@@ -1,5 +1,5 @@
 {
   "extends": "./base.json",
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Backend"
+  "display": "Node"
 }

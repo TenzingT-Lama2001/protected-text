@@ -1,5 +1,5 @@
 module.exports = {
   root: true,
-  extends: ['custom/index'],
+  extends: ['custom/base'],
   ignorePatterns: ['**/*.js', '**/*.d.ts'],
 };

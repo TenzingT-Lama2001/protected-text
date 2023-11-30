@@ -8,6 +8,7 @@
   },
     "files":[
     "base.json",
-    "backend.json"
+    "node.json",
+    "next.json"
   ]
 }
