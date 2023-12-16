@@ -5,6 +5,7 @@
   "author": "Tenzing",
   "license": "MIT",
   "scripts": {
+    "start": "node dist/src/app.js",
     "build": "tsc",
     "dev": "nodemon",
     "lint": "eslint . --cache --ignore-pattern .gitignore",

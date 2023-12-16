@@ -1,7 +1,9 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
 import type { Metadata } from 'next';
+// import TailwindIndicator from '../components/TailwindIndicator';
 import TailwindIndicator from '../components/TailwindIndicator';
+import TanstackProvider from '../provider/TanstackProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -16,8 +18,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
-        <TailwindIndicator />
+        <TanstackProvider>
+          {children}
+          <TailwindIndicator />
+        </TanstackProvider>
       </body>
     </html>
   );

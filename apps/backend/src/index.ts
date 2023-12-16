@@ -18,7 +18,7 @@ export class ProtectedTextServer {
     this.app.use(express.json());
     this.app.use(
       cors({
-        origin: ['http://localhost:3001'],
+        origin: ['http://localhost:3000'],
         credentials: true,
       }),
     );

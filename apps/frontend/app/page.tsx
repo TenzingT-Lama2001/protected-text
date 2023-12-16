@@ -5,8 +5,13 @@ import { useRouter } from 'next/navigation';
 import MainNav from '../components/MainNav';
 
 export default function Home() {
-  const [site, setSite] = useState<string>('');
+  const [site, setSite] = useState<string>('site222');
   const router = useRouter();
+
+  const handleCreateSite = async () => {
+    router.push(`/${site}`);
+  };
+
   return (
     <main className="flex min-h-screen flex-col ">
       <MainNav />
@@ -33,7 +38,7 @@ export default function Home() {
             <button
               type="button"
               className="text-[#ffffff] bg-[#33996B] hover:bg-[#70b395] rounded-md py-2 px-3 text-sm font-semibold"
-              onClick={() => router.push(`/${site}`)}
+              onClick={() => handleCreateSite()}
             >
               Create site
             </button>

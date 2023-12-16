@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.13.4",
+    "@tanstack/react-query-devtools": "^5.13.5",
+    "axios": "^1.6.2",
     "crypto-js": "^4.1.1",
     "encryption-handler": "*",
     "next": "13.5.4",
@@ -16,6 +19,7 @@
     "react-dom": "^18",
     "react-icons": "^4.11.0",
     "uuid": "^9.0.1",
+    "zukeeper": "^1.0.2",
     "zustand": "^4.4.3"
   },
   "devDependencies": {

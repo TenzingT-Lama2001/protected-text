@@ -18,7 +18,8 @@
       "dependsOn": ["encryption-handler#build"]
     },
     "lint": {},
-    "test":{}
+    "test":{},
+    "start":{}
 
   }
 }

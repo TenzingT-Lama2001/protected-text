@@ -4,7 +4,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import CryptoJS from 'crypto-js';
 import generateUuid from '../utils/generateUuid';
 import { getTitleFromContent } from '../utils/helper';
-import { useBoundStore } from '../store/store';
+import { useContentStore, useInitializeStore } from '../store/store';
 
 interface Tab {
   id: string;
@@ -12,18 +12,20 @@ interface Tab {
   content: string;
 }
 function TextTabs() {
-  const [tabs, setTabs] = useState<Tab[]>([{ id: generateUuid(), content: '', name: 'Empty Tab' }]);
+  const { content, setContent } = useContentStore();
+  const [tabs, setTabs] = useState<Tab[]>([{ id: generateUuid(), content, name: 'Empty Tab' }]);
   const [activeTab, setActiveTab] = useState<string | null>(tabs[0]?.id);
-  const setContent = useBoundStore((state) => state.setContent);
   const [closedTab, setClosedTab] = useState<Tab | undefined>();
   const [undoTimer, setUndoTimer] = useState<number | null>(null);
+  const { initialize, setInitialize } = useInitializeStore();
+
   const addTab = () => {
     const newTabId = generateUuid();
     const newTab: Tab = { id: newTabId, content: '', name: 'Empty Tab' };
     setTabs([...tabs, newTab]);
     setActiveTab(newTabId);
   };
-
+  console.log({ content });
   useEffect(() => {
     const separator = CryptoJS.SHA512('-- tab separator --').toString();
     let allTabsContent = '';
@@ -36,6 +38,21 @@ function TextTabs() {
     });
     setContent(allTabsContent);
   }, [tabs, setContent]);
+
+  // Load the content from the store into the tabs
+  useEffect(() => {
+    console.log({ initialize });
+    const separator = CryptoJS.SHA512('-- tab separator --').toString();
+    const tabsContent = content.split(separator);
+    const newTabs: Tab[] = tabsContent.map((tabContent) => ({
+      id: generateUuid(),
+      content: tabContent,
+      name: getTitleFromContent(tabContent),
+    }));
+    setTabs(newTabs);
+    setInitialize(false);
+    setActiveTab(newTabs[0]?.id);
+  }, [initialize, setInitialize]);
 
   const closeTab = (tabId: string) => {
     if (tabs.length === 1) {
@@ -72,7 +89,6 @@ function TextTabs() {
   };
   const handleTextAreaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const title = getTitleFromContent(event.target.value);
-
     setTabs((prevState) => {
       const updatedTabs: Tab[] = prevState.map((tab) =>
         tab.id === activeTab ? { ...tab, content: event.target.value, name: title } : tab,

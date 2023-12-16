@@ -20,9 +20,6 @@
         "name": "next"
       }
     ],
-      "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@/*": ["./*"]
-    }
+    "forceConsistentCasingInFileNames": true,
   }
 }

@@ -1,11 +1,56 @@
-import { useBoundStore } from '../store/store';
+'use client';
+
+import { useMutation } from '@tanstack/react-query';
+import { encrypt, hash } from 'encryption-handler';
+import { useParams } from 'next/navigation';
+import { useContentStore, useInitializeStore } from '../store/store';
 import { Logo } from './Logo';
+import { PostNote, UpdateNote, postNote, updateNote } from '../api/note';
 
 export default function NavBar() {
-  const content = useBoundStore((state) => state.content);
+  const { content, contentHash } = useContentStore();
+  const { isNew } = useInitializeStore();
+  const params = useParams();
+  const { mutate: postNoteMutation, data: postNoteResult } = useMutation({
+    mutationFn: async (data: PostNote) => postNote(data),
+    onSuccess: () => {
+      alert('Note saved successfully');
+    },
+  });
+
+  const { mutate: updateNoteMutation, data: updateNoteResult } = useMutation({
+    mutationFn: async (data: UpdateNote) => updateNote(params.noteId as string, data),
+    onSuccess: () => {
+      alert('Note saved successfully');
+    },
+  });
+  console.log('🚀 ~ file: NavBar.tsx:27 ~ NavBar ~ updateNoteResult:', updateNoteResult);
+
   const handleOnSave = () => {
     console.log(content);
+    const noteIdHash = hash(params.noteId as string);
+    const encryptedNote = encrypt(content, 'secret123', noteIdHash);
+
+    if (isNew) {
+      const data: PostNote = {
+        noteId: params.noteId as string,
+        note: encryptedNote,
+        hash: contentHash,
+      };
+      postNoteMutation(data);
+    } else {
+      const secretKeyHash = hash('secret123');
+      const noteHash = hash(content + secretKeyHash);
+      const data: UpdateNote = {
+        note: encryptedNote,
+        hash: noteHash,
+        previousHash: contentHash,
+      };
+      updateNoteMutation(data);
+    }
   };
+
+  console.log({ postNoteResult });
   return (
     <header>
       <nav className="bg-[#1C1C1C] text-white flex flex-col justify-center items-center p-2  border-b border-gray-600 ">
