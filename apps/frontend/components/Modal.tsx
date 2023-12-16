@@ -11,7 +11,6 @@ interface ConfirmationModalProps {
 }
 
 export default function ConfirmationModal({ note, onConfirm }: ConfirmationModalProps) {
-  console.log({ note });
   const [secretKey, setSecretKey] = React.useState<string>('');
   const router = useRouter();
   const params = useParams();
@@ -32,7 +31,6 @@ export default function ConfirmationModal({ note, onConfirm }: ConfirmationModal
     if (note) {
       const noteIdHash = hash(params.noteId as string);
       const result = decrypt(note, secretKey, noteIdHash);
-      console.log('🚀 ~ file: Modal.tsx:33 ~ handleDecryption ~ result:', result);
       if (result.decryptedNote) {
         setContent(result.decryptedNote as string);
         setInitialize(true);

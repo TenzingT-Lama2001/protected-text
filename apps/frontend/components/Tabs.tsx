@@ -25,7 +25,6 @@ function TextTabs() {
     setTabs([...tabs, newTab]);
     setActiveTab(newTabId);
   };
-  console.log({ content });
   useEffect(() => {
     const separator = CryptoJS.SHA512('-- tab separator --').toString();
     let allTabsContent = '';
@@ -41,7 +40,6 @@ function TextTabs() {
 
   // Load the content from the store into the tabs
   useEffect(() => {
-    console.log({ initialize });
     const separator = CryptoJS.SHA512('-- tab separator --').toString();
     const tabsContent = content.split(separator);
     const newTabs: Tab[] = tabsContent.map((tabContent) => ({

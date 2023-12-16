@@ -35,6 +35,7 @@ export const postNote = async (payload: PostNote) => {
 };
 
 export const updateNote = async (noteId: string, payload: UpdateNote) => {
+  console.log({ payload });
   const { data } = await axios.patch<GetNoteResponse>(`/notes/${noteId}`, payload);
   return data;
 };

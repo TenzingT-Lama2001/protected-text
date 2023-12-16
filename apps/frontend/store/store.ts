@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import zukeeper from 'zukeeper';
+// import zukeeper from 'zukeeper';
 // import { ContentSlice, createContentSlice } from './slices';
 
 // export const useStore = create<ContentSlice>(
@@ -36,7 +36,7 @@ export interface ContentState {
   content: string;
   contentHash: string;
   setContent: (content: string) => void;
-  setContentHash: (hash: string) => void;
+  setContentHash: (contentHash: string) => void;
 }
 
 export interface InitializeState {
@@ -45,19 +45,28 @@ export interface InitializeState {
   isNew: boolean;
   setIsNew: (isNew: boolean) => void;
 }
-export const useContentStore = create<ContentState>(
-  zukeeper((set: any) => ({
-    content: '',
-    setContent: (newContent: string) => {
-      set({ content: newContent });
-    },
-    contentHash: '',
-    setContentHash: (hash: string) => {
-      set({ hash });
-    },
-  })),
-);
-
+// export const useContentStore = create<ContentState>(
+//   zukeeper((set: any) => ({
+//     content: '',
+//     setContent: (newContent: string) => {
+//       set({ content: newContent });
+//     },
+//     contentHash: '',
+//     setContentHash: (contentHash: string) => {
+//       set({ contentHash });
+//     },
+//   })),
+// );
+export const useContentStore = create<ContentState>((set) => ({
+  content: '',
+  setContent: (newContent: string) => {
+    set({ content: newContent });
+  },
+  contentHash: '',
+  setContentHash: (contentHash: string) => {
+    set({ contentHash });
+  },
+}));
 export const useInitializeStore = create<InitializeState>((set) => ({
   initialize: false,
   setInitialize: (initialize: boolean) => {
