@@ -18,11 +18,20 @@ export class NoteController {
 
   public static async postNote(req: Request, res: Response) {
     const { note, hash, noteId } = req.body;
-    const newNote = await NoteService.postNote(noteId, note, hash);
 
-    res.status(HTTP_STATUS.CREATED).json({
-      note: newNote,
-    });
+    const existingNote = await NoteService.getNote(noteId);
+
+    if (existingNote) {
+      const updatedNote = await NoteService.updateNote(noteId, note, hash);
+      res.status(HTTP_STATUS.OK).json({
+        note: updatedNote,
+      });
+    } else {
+      const newNote = await NoteService.postNote(noteId, note, hash);
+      res.status(HTTP_STATUS.CREATED).json({
+        note: newNote,
+      });
+    }
   }
 
   public static async deleteNote(req: Request, res: Response) {

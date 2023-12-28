@@ -1,24 +1,56 @@
 'use client';
 
+import React from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { encrypt, hash } from 'encryption-handler';
+import { decrypt, encrypt, hash } from 'encryption-handler';
 import { useParams } from 'next/navigation';
 import { useContentStore, useInitializeStore } from '../store/store';
 import { Logo } from './Logo';
-import { PostNote, UpdateNote, postNote, updateNote } from '../api/note';
+import { UpdateNote, getNote, updateNote } from '../api/note';
+import PasswordModal from './PasswordModal';
+import DeleteModal from './DeleteModal';
 
 export default function NavBar() {
-  const { content, contentHash } = useContentStore();
-  console.log('🚀 ~ file: NavBar.tsx:12 ~ NavBar ~ contentHash:', contentHash);
-  console.log('🚀 ~ file: NavBar.tsx:12 ~ NavBar ~ content:', content);
-  const { isNew } = useInitializeStore();
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = React.useState<boolean>(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState<boolean>(false);
+  const [reload, setReload] = React.useState<boolean>(false);
+  const { content, contentHash, secretKey, setContent, setContentHash } = useContentStore();
+  const { isNew, setInitialize, setIsNew } = useInitializeStore();
   const params = useParams();
-  const { mutate: postNoteMutation } = useMutation({
-    mutationFn: async (data: PostNote) => postNote(data),
-    onSuccess: () => {
-      alert('Note saved successfully');
-    },
-  });
+  console.log(params);
+
+  // TODO: MAKE THIS WORK
+  const handleDecryption = (note: string) => {
+    if (note) {
+      const noteIdHash = hash(params.noteId as string);
+      const result = decrypt(note, secretKey, noteIdHash);
+      if (result.decryptedNote) {
+        setContent(result.decryptedNote as string);
+        setInitialize(true);
+        setIsNew(false);
+        const secretKeyHash = hash(secretKey);
+        const noteHash = hash(result.decryptedNote + secretKeyHash);
+        setContentHash(noteHash);
+      }
+    }
+  };
+  const fetchNote = async () => {
+    try {
+      const { note } = await getNote(params.noteId as string);
+      console.log('🚀 ~ file: NavBar.tsx:25 ~ fetchNote ~ note:', note);
+      // decrypt the note
+      // set content
+      handleDecryption(note.note);
+    } catch (error: any) {
+      console.error('Error fetching note:', error.message);
+    }
+  };
+  React.useEffect(() => {
+    if (reload) {
+      fetchNote();
+      setReload(false);
+    }
+  }, [reload, setReload]);
 
   const { mutate: updateNoteMutation } = useMutation({
     mutationFn: async (data: UpdateNote) => updateNote(params.noteId as string, data),
@@ -28,20 +60,13 @@ export default function NavBar() {
   });
 
   const handleOnSave = () => {
-    const noteIdHash = hash(params.noteId as string);
-    const encryptedNote = encrypt(content, 'secret123', noteIdHash);
-
     if (isNew) {
-      const data: PostNote = {
-        noteId: params.noteId as string,
-        note: encryptedNote,
-        hash: contentHash,
-      };
-      postNoteMutation(data);
+      setIsPasswordModalOpen(true);
     } else {
-      const secretKeyHash = hash('secret123');
+      const noteIdHash = hash(params.noteId as string);
+      const encryptedNote = encrypt(content, secretKey, noteIdHash);
+      const secretKeyHash = hash(secretKey);
       const noteHash = hash(content + secretKeyHash);
-      console.log({ contentHash });
       const data: UpdateNote = {
         note: encryptedNote,
         hash: noteHash,
@@ -51,6 +76,27 @@ export default function NavBar() {
     }
   };
 
+  const handleResetPassword = () => {
+    setIsPasswordModalOpen(true);
+  };
+
+  const closePasswordModal = () => {
+    setIsPasswordModalOpen(false);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+  const handleDelete = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleReload = () => {
+    // get the note from the server
+    // do not ask for password
+    setReload(true);
+  };
   return (
     <header>
       <nav className="bg-[#1C1C1C] text-white flex flex-col justify-center items-center p-2  border-b border-gray-600 ">
@@ -59,6 +105,7 @@ export default function NavBar() {
           <button
             type="button"
             className="text-[#33996B] bg-gray-100 border-[#33996B] p-1 rounded-sm py-2 px-1.5 sm:py-2 sm:px-4 sm:rounded-md transition-all hover:bg-white hover:text-[#70b395]"
+            onClick={() => handleReload()}
           >
             Reload
           </button>
@@ -72,18 +119,32 @@ export default function NavBar() {
           </button>
           <button
             type="button"
-            className="text-[#af3131] border-[#33996B] bg-gray-100 p-1 hover:bg-white hover:text-[#c24c4c] rounded-sm py-2 px-1.5  sm:py-2 sm:px-4 sm:rounded-md"
+            className={`text-[#af3131] border-[#33996B] bg-gray-100 p-1 hover:bg-white hover:text-[#c24c4c] rounded-sm py-2 px-1.5  sm:py-2 sm:px-4 sm:rounded-md ${
+              isNew ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            onClick={() => handleResetPassword()}
           >
             Reset Password
           </button>
           <button
             type="button"
             className="text-[#ffffff] bg-[#af3131] p-1 hover:bg-[#c24c4c] rounded-sm py-2 px-1.5 sm:py-2 sm:px-4 sm:rounded-md"
+            onClick={() => handleDelete()}
           >
             Delete
           </button>
         </div>
       </nav>
+      {isPasswordModalOpen && (
+        <div className="fixed top-0 left-0 w-full h-full  bg-black bg-opacity-50 z-50">
+          <PasswordModal onClose={closePasswordModal} />
+        </div>
+      )}
+      {isDeleteModalOpen && (
+        <div className="fixed top-0 left-0 w-full h-full  bg-black bg-opacity-50 z-50">
+          <DeleteModal onClose={closeDeleteModal} />
+        </div>
+      )}
     </header>
   );
 }

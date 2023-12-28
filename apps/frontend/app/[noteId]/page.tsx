@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 // import { useQuery } from '@tanstack/react-query';
 import TextTabs from '../../components/Tabs';
-import ConfirmationModal from '../../components/Modal';
+import ConfirmationModal from '../../components/ConfirmationModal';
 import { getNote } from '../../api/note';
 
 export default function Page({ params }: { params: { noteId: string } }) {

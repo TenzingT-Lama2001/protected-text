@@ -39,3 +39,8 @@ export const updateNote = async (noteId: string, payload: UpdateNote) => {
   const { data } = await axios.patch<GetNoteResponse>(`/notes/${noteId}`, payload);
   return data;
 };
+
+export const deleteNote = async (noteId: string) => {
+  const { data } = await axios.delete(`/notes/${noteId}`);
+  return data;
+};

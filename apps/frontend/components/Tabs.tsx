@@ -16,8 +16,9 @@ function TextTabs() {
   const [tabs, setTabs] = useState<Tab[]>([{ id: generateUuid(), content, name: 'Empty Tab' }]);
   const [activeTab, setActiveTab] = useState<string | null>(tabs[0]?.id);
   const [closedTab, setClosedTab] = useState<Tab | undefined>();
-  const [undoTimer, setUndoTimer] = useState<number | null>(null);
   const { initialize, setInitialize } = useInitializeStore();
+  const [count, setCount] = useState(5);
+  const [running, setRunning] = useState(false);
 
   const addTab = () => {
     const newTabId = generateUuid();
@@ -52,6 +53,20 @@ function TextTabs() {
     setActiveTab(newTabs[0]?.id);
   }, [initialize, setInitialize]);
 
+  useEffect(() => {
+    let timerId: NodeJS.Timeout;
+    if (running) {
+      timerId = setInterval(() => {
+        if (count > 1) {
+          setCount((prevCount) => prevCount - 1);
+        } else {
+          setRunning(false);
+        }
+      }, 1000);
+    }
+    return () => clearInterval(timerId);
+  }, [count, running]);
+
   const closeTab = (tabId: string) => {
     if (tabs.length === 1) {
       return;
@@ -61,30 +76,23 @@ function TextTabs() {
     const newActiveTab: Tab | undefined = updatedTabs[updatedTabs.length - 1];
     setTabs(updatedTabs);
     setClosedTab(tabClosed);
-    setUndoTimer(5);
+    setCount(5);
+    setRunning(true);
 
     if (activeTab === tabId) {
       setActiveTab(newActiveTab ? newActiveTab.id : null);
     }
-    // Start a countdown to clear the closedTab and undoTimer states after 5 seconds
-    const countdownInterval = setInterval(() => {
-      setUndoTimer((prevTimer) => (prevTimer ? prevTimer - 1 : null));
-    }, 1000);
-
-    setTimeout(() => {
-      clearInterval(countdownInterval);
-      setClosedTab(undefined);
-      setUndoTimer(null);
-    }, 5000);
   };
 
   const undoCloseTab = () => {
     if (closedTab) {
+      setCount(0);
       setTabs((prevTabs) => [...prevTabs, closedTab]);
       setActiveTab(closedTab.id);
       setClosedTab(undefined);
     }
   };
+
   const handleTextAreaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const title = getTitleFromContent(event.target.value);
     setTabs((prevState) => {
@@ -136,17 +144,13 @@ function TextTabs() {
       </div>
 
       <div className="flex items-center text-sm text-gray-500 mt-2">
-        {closedTab && (
+        {running && closedTab && (
           <span className="p-1">
-            Tab &ldquo;{closedTab.name}&rdquo; closed.{' '}
-            {undoTimer !== null && (
-              <>
-                <button type="button" onClick={() => undoCloseTab()} className="underline cursor-pointer">
-                  Undo
-                </button>{' '}
-                in {undoTimer} seconds.{' '}
-              </>
-            )}
+            Tab &ldquo;{closedTab.name}&rdquo; closed. (
+            <button type="button" onClick={() => undoCloseTab()} className="underline cursor-pointer">
+              Undo
+            </button>{' '}
+            in {count} seconds. )
           </span>
         )}
       </div>

@@ -11,11 +11,11 @@ interface ConfirmationModalProps {
 }
 
 export default function ConfirmationModal({ note, onConfirm }: ConfirmationModalProps) {
-  const [secretKey, setSecretKey] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
   const router = useRouter();
   const params = useParams();
   const [error, setError] = React.useState<string | undefined>('');
-  const { setContent, setContentHash } = useContentStore();
+  const { setContent, setContentHash, setSecretKey } = useContentStore();
   const { setInitialize, setIsNew } = useInitializeStore();
 
   const handleCreateSite = () => {
@@ -30,14 +30,15 @@ export default function ConfirmationModal({ note, onConfirm }: ConfirmationModal
   const handleDecryption = () => {
     if (note) {
       const noteIdHash = hash(params.noteId as string);
-      const result = decrypt(note, secretKey, noteIdHash);
+      const result = decrypt(note, password, noteIdHash);
       if (result.decryptedNote) {
         setContent(result.decryptedNote as string);
         setInitialize(true);
         setIsNew(false);
-        const secretKeyHash = hash('secret123');
+        const secretKeyHash = hash(password);
         const noteHash = hash(result.decryptedNote + secretKeyHash);
         setContentHash(noteHash);
+        setSecretKey(password);
         onConfirm(true);
       } else {
         setError(result.message);
@@ -57,8 +58,8 @@ export default function ConfirmationModal({ note, onConfirm }: ConfirmationModal
             <div>
               <input
                 type="password"
-                value={secretKey}
-                onChange={(e) => setSecretKey(e.target.value)}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-[#333333] rounded-md py-2.5 px-3 outline-none text-[#D9D9D9]"
               />
               <div>

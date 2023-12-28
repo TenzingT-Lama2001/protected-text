@@ -35,6 +35,8 @@ import { create } from 'zustand';
 export interface ContentState {
   content: string;
   contentHash: string;
+  secretKey: string;
+  setSecretKey: (secretKey: string) => void;
   setContent: (content: string) => void;
   setContentHash: (contentHash: string) => void;
 }
@@ -66,6 +68,10 @@ export const useContentStore = create<ContentState>((set) => ({
   setContentHash: (contentHash: string) => {
     set({ contentHash });
   },
+  secretKey: '',
+  setSecretKey: (secretKey: string) => {
+    set({ secretKey });
+  },
 }));
 export const useInitializeStore = create<InitializeState>((set) => ({
   initialize: false,
@@ -78,10 +84,10 @@ export const useInitializeStore = create<InitializeState>((set) => ({
   },
 }));
 
-declare global {
-  interface Window {
-    store: any;
-  }
-}
+// declare global {
+//   interface Window {
+//     store: any;
+//   }
+// }
 
-window.store = useContentStore;
+// window.store = useContentStore;
