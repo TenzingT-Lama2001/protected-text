@@ -18,7 +18,11 @@ export class ProtectedTextServer {
     this.app.use(express.json());
     this.app.use(
       cors({
-        origin: ['http://localhost:3000'],
+        origin: [
+          'http://localhost:3000',
+          'https://protected-dev.tenzing121.com.np',
+          'https://protected.tenzing121.com.np',
+        ],
         credentials: true,
       }),
     );
