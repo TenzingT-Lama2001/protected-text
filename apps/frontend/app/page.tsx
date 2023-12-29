@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import MainNav from '../components/MainNav';
 
 export default function Home() {
-  const [site, setSite] = useState<string>('site222');
+  const [site, setSite] = useState<string>('');
   const router = useRouter();
 
   const handleCreateSite = async () => {
@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col ">
       <MainNav />
-      <section className="mt-12 p-4">
+      <section className="mt-20 p-4">
         <div className="flex flex-col items-center ">
           <h1 className="text-foreground text-4xl sm:text-5xl sm:leading-none lg:text-7xl text-center p-2">
             <span className="block text-[#DCDCDC]">Where your words</span>
