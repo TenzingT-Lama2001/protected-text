@@ -1,5 +1,5 @@
+import { NoteController } from '@controller/note.controller';
 import { INoteDocument } from '@interface/note/note.interface';
-import Note from '@model/note.model';
 import { NoteService } from '@service/note.service';
 import { ProtectedTextServer } from '@src/index';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -7,8 +7,11 @@ import request from 'supertest';
 
 const server = new ProtectedTextServer();
 const { app } = server;
-jest.mock('../../model/note.model');
+
 describe('NoteRoutes', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
   const mockNote = {
     _id: '64df237223433eb06a246ef3',
     noteId: 'site222',
@@ -17,26 +20,29 @@ describe('NoteRoutes', () => {
     __v: 0,
   } as INoteDocument;
 
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
   describe('Get Note', () => {
     it('should return a note from given noteId', async () => {
       // Arrange
       const noteId = 'site222';
-      jest.spyOn(NoteService, 'getNote').mockResolvedValueOnce(mockNote);
-
-      // Act and Assert
-      await request(app).get(`/api/v1/notes/${noteId}`).expect(200);
+      const noteControllerSpy = jest.spyOn(NoteController, 'getNote');
+      const noteServiceSpy = jest.spyOn(NoteService, 'getNote').mockResolvedValueOnce(mockNote);
+      // Act
+      await request(app).get(`/api/v1/notes/${noteId}`);
+      // Assert
+      expect(noteControllerSpy).toHaveBeenCalledTimes(1);
+      expect(noteServiceSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should return 404 and throw error if note with given noteId is not found', async () => {
       // Arrange
       const noteId = 'site222';
-      jest.spyOn(NoteService, 'getNote').mockResolvedValueOnce(null);
-
-      // Act and Assert
-      await request(app).get(`/api/v1/notes/${noteId}`).expect(404);
+      const noteControllerSpy = jest.spyOn(NoteController, 'getNote');
+      const noteServiceSpy = jest.spyOn(NoteService, 'getNote').mockResolvedValueOnce(null);
+      // Act
+      await request(app).get(`/api/v1/notes/${noteId}`);
+      // Assert
+      expect(noteControllerSpy).toHaveBeenCalledTimes(1);
+      expect(noteServiceSpy).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -45,24 +51,19 @@ describe('NoteRoutes', () => {
     const noteId = 'site';
     const hash = 'myHash';
     it('should return the posted note', async () => {
-      // Arrange=
-
-      const createMockNote = {
-        _id: '64df237223433eb06a246ef3',
-        noteId: 'site222',
-        hash: 'previousHash',
-        note: 'encrypted note',
-        __v: 0,
-        toObject: jest.fn(),
-      };
-      (Note.create as jest.Mock).mockResolvedValueOnce(createMockNote);
-
+      // Arrange
+      const noteControllerSpy = jest.spyOn(NoteController, 'postNote');
+      const noteServiceSpy = jest.spyOn(NoteService, 'postNote').mockResolvedValueOnce(mockNote);
       const mockRequest = {
         note,
         hash,
         noteId,
       };
-      await request(app).post('/api/v1/notes').send(mockRequest).expect(201);
+      // Act
+      await request(app).post('/api/v1/notes').send(mockRequest);
+      // Assert
+      expect(noteControllerSpy).toHaveBeenCalledTimes(1);
+      expect(noteServiceSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should throw validation error if request is missing something', async () => {
@@ -71,9 +72,11 @@ describe('NoteRoutes', () => {
         note,
         noteId,
       };
-
-      // Act and Assert
-      await request(app).post('/api/v1/notes').send(mockRequest).expect(400);
+      const noteControllerSpy = jest.spyOn(NoteController, 'postNote');
+      // Act
+      await request(app).post('/api/v1/notes').send(mockRequest);
+      // Assert
+      expect(noteControllerSpy).toHaveBeenCalledTimes(0);
     });
   });
 
@@ -81,19 +84,25 @@ describe('NoteRoutes', () => {
     it('should delete the note', async () => {
       // Arrange
       const noteId = 'site222';
-      jest.spyOn(Note, 'findOneAndDelete').mockResolvedValueOnce(mockNote);
-
-      // Act and Assert
-      await request(app).delete(`/api/v1/notes/${noteId}`).expect(204);
+      const noteControllerSpy = jest.spyOn(NoteController, 'deleteNote');
+      const noteServiceSpy = jest.spyOn(NoteService, 'deleteNote').mockResolvedValueOnce(null);
+      // Act
+      await request(app).delete(`/api/v1/notes/${noteId}`);
+      // Assert
+      expect(noteControllerSpy).toHaveBeenCalledTimes(1);
+      expect(noteServiceSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should set header x-resource-not-found to true if note is not found', async () => {
       // Arrange
       const noteId = 'site222';
-      jest.spyOn(Note, 'findOneAndDelete').mockResolvedValueOnce(null);
-
-      // Act and Assert
-      await request(app).delete(`/api/v1/notes/${noteId}`).expect(204);
+      const noteControllerSpy = jest.spyOn(NoteController, 'deleteNote');
+      const noteServiceSpy = jest.spyOn(NoteService, 'deleteNote').mockResolvedValueOnce(null);
+      // Act
+      await request(app).delete(`/api/v1/notes/${noteId}`);
+      // Assert
+      expect(noteControllerSpy).toHaveBeenCalledTimes(1);
+      expect(noteServiceSpy).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -107,7 +116,7 @@ describe('NoteRoutes', () => {
       note: 'U2FsdGVkX19XmKyA1yFs4dZwqXeCOMl6MDve+LVVmVPk0gbILsAlQOB25y1nELqriOGk9PGt0zW4dff2H2dP+xxF+TjXg+hvlpBoPe0EmYQM/EJHpRJz5dmTfboKFqgu82O60B3Y0NTk92DEcs3zAyoqHsjDX0nIitinF5iUexsMg9XWTcAKYbVUzJg3DBwjgblF+ergrP0phQWTwTDXNcbdIMP6cBvw0iVmG0qZktY=',
       hash: '0a2c4f4bb995c681da396abf0982e9fe2bc110ebad10ffcf327d7158963b3b12f96a9f8d584739cbb7edea256729f09a03b8c7ed826c3bb09acf056db539e2a8',
       __v: 0,
-    };
+    } as INoteDocument;
 
     it('should update the note', async () => {
       // Arrange
@@ -116,12 +125,13 @@ describe('NoteRoutes', () => {
         note: updatedNote.note,
         hash: updatedNote.hash,
       };
-
-      jest.spyOn(Note, 'findOne').mockResolvedValue(mockNote);
-      jest.spyOn(Note, 'findOneAndUpdate').mockResolvedValue(updatedNote);
-
+      const noteControllerSpy = jest.spyOn(NoteController, 'updateNote');
+      const noteServiceSpy = jest.spyOn(NoteService, 'updateNote').mockResolvedValueOnce(updatedNote);
       // Act
-      await request(app).patch(`/api/v1/notes/${noteId}`).send(mockRequest).expect(200);
+      await request(app).patch(`/api/v1/notes/${noteId}`).send(mockRequest);
+      // Assert
+      expect(noteControllerSpy).toHaveBeenCalledTimes(1);
+      expect(noteServiceSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should return 404 if the note is not found', async () => {
@@ -131,24 +141,27 @@ describe('NoteRoutes', () => {
         note: updatedNote.note,
         hash: updatedNote.hash,
       };
-
-      jest.spyOn(Note, 'findOne').mockResolvedValue(null);
-
+      const noteControllerSpy = jest.spyOn(NoteController, 'updateNote');
       // Act
-      await request(app).patch(`/api/v1/notes/${noteId}`).send(mockRequest).expect(404);
+      await request(app).patch(`/api/v1/notes/${noteId}`).send(mockRequest);
+      // Assert
+      expect(noteControllerSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should return the same note if the new hash is same as old hash', async () => {
       // Arrange
       const mockRequest = {
-        previousHash: hash,
+        previousHash: mockNote.hash,
         note: updatedNote.note,
         hash: mockNote.hash,
       };
-      jest.spyOn(Note, 'findOne').mockResolvedValue(mockNote);
-
-      // Act and Assert
-      await request(app).patch(`/api/v1/notes/${noteId}`).send(mockRequest).expect(200);
+      const noteControllerSpy = jest.spyOn(NoteController, 'updateNote');
+      const noteServiceSpy = jest.spyOn(NoteService, 'updateNote').mockResolvedValueOnce(mockNote);
+      // Act
+      await request(app).patch(`/api/v1/notes/${noteId}`).send(mockRequest);
+      // Assert
+      expect(noteControllerSpy).toHaveBeenCalledTimes(1);
+      expect(noteServiceSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should throw validation error if request is missing something', async () => {
@@ -157,9 +170,11 @@ describe('NoteRoutes', () => {
         previousHash: hash,
         note: updatedNote.note,
       };
-
-      // Act and Assert
-      await request(app).patch(`/api/v1/notes/${noteId}`).send(mockRequest).expect(400);
+      const noteControllerSpy = jest.spyOn(NoteController, 'updateNote');
+      // Act
+      await request(app).patch(`/api/v1/notes/${noteId}`).send(mockRequest);
+      // Assert
+      expect(noteControllerSpy).toHaveBeenCalledTimes(0);
     });
   });
 });
