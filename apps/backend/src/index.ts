@@ -22,6 +22,7 @@ export class ProtectedTextServer {
           'http://localhost:3000',
           'https://protected-dev.tenzing121.com.np',
           'https://protected.tenzing121.com.np',
+          'https://protected-text-frontend.vercel.app',
         ],
         credentials: true,
       }),
