@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 const baseURL = 'https://protected.tenzing121.com.np';
-const apiVersion = 'v1';
+const apiVersion = '/api/v1';
 
 const createAxiosInstance = (apiV: string) =>
   axios.create({
