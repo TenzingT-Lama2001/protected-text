@@ -26,5 +26,9 @@
     "tsconfig": "*",
     "turbo": "latest"
   },
-  "version": "1.0.0-beta.1"
+  "version": "1.0.0-beta.1",
+    "engines": {
+    "node": ">=20.10.0 <21",
+    "npm": ">=10.2.0 <11"
+  }
 }
