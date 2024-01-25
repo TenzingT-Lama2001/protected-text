@@ -1,9 +1,10 @@
 import path from 'path';
 
 export const basePath = path.join(__dirname, '..');
-export const isDevEnv = process.env.NODE_ENV === 'development';
+
 export default {
   basePath,
+  isDevEnv: process.env.NODE_ENV === 'development',
   db: {
     databaseUrl: process.env.DATABASE_URL,
   },

@@ -1,7 +1,10 @@
 import { createLogger, format, transports } from 'winston';
 import config from 'config';
 import { ILoggerConfig } from '@interface/config/config.interface';
+import path from 'path';
 import pkg from '../../package.json';
+
+process.env.NODE_CONFIG_DIR = path.join(__dirname, '..', '..', 'config');
 
 const { combine, timestamp, json, errors, prettyPrint, metadata } = format;
 const loggerConfig = config.get('logger') as ILoggerConfig;

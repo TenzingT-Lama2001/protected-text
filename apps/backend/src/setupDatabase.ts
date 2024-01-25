@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import config from 'config';
-import ptLogger from '@logger';
+import ptLogger from '@logger/logger';
 import { IDbConfig } from '@interface/config/config.interface';
 
 const dbConfig = config.get('db') as IDbConfig;

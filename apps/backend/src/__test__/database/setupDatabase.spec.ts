@@ -10,7 +10,7 @@ jest.mock('mongoose', () => ({
   connect: jest.fn(),
 }));
 
-jest.mock('@logger', () => {
+jest.mock('@logger/logger', () => {
   return {
     child: jest.fn(() => ({
       info: jest.fn(),

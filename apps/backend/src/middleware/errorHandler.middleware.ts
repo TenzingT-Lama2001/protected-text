@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import ptLogger from '@logger';
+import ptLogger from '@logger/logger';
 import HTTP_STATUS from 'http-status-codes';
 import { CustomError } from 'src/error/custom.error';
-import { isDevEnv } from '@config/default';
+import config from 'config';
 
+const isDevEnv = config.get('isDevEnv');
 const logger = ptLogger.child({ file: __filename });
 
 export function notFoundHandler(req: Request, res: Response, next: NextFunction) {

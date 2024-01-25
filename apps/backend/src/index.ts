@@ -1,6 +1,6 @@
 import express, { Application } from 'express';
 import cors from 'cors';
-import ptLogger from '@logger';
+import ptLogger from '@logger/logger';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.middleware';
 import { V1Routes } from './route/v1';
 
